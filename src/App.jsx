@@ -1,24 +1,24 @@
 import React from 'react';
 import { createAssistant, createSmartappDebugger } from '@salutejs/client';
-
 import './App.css';
 import { TaskList } from './pages/TaskList';
 
-const initializeAssistant = (getState /*: any*/, getRecoveryState) => {
+const API_URL = 'http://localhost:8000'; // URL вашего FastAPI сервера
+
+const initializeAssistant = (getState) => {
   if (process.env.NODE_ENV === 'development') {
     return createSmartappDebugger({
       token: process.env.REACT_APP_TOKEN ?? '',
       initPhrase: `Запусти ${process.env.REACT_APP_SMARTAPP}`,
-      getState,                                           
-      // getRecoveryState: getState,                                           
+      getState,
       nativePanel: {
         defaultText: 'ччччччч',
         screenshotMode: false,
         tabIndex: -1,
-    },
+      },
     });
   } else {
-  return createAssistant({ getState });
+    return createAssistant({ getState });
   }
 };
 
@@ -28,12 +28,12 @@ export class App extends React.Component {
     console.log('constructor');
 
     this.state = {
-      notes: [{ id: Math.random().toString(36).substring(7), title: 'тест' }],
+      notes: [], // Изначально пустой массив, данные будут загружены из API
     };
 
     this.assistant = initializeAssistant(() => this.getStateForAssistant());
 
-    this.assistant.on('data', (event /*: any*/) => {
+    this.assistant.on('data', (event) => {
       console.log(`assistant.on(data)`, event);
       if (event.type === 'character') {
         console.log(`assistant.on(data): character: "${event?.character?.id}"`);
@@ -47,7 +47,6 @@ export class App extends React.Component {
 
     this.assistant.on('start', (event) => {
       let initialData = this.assistant.getInitialData();
-
       console.log(`assistant.on(start)`, event, initialData);
     });
 
@@ -66,7 +65,19 @@ export class App extends React.Component {
 
   componentDidMount() {
     console.log('componentDidMount');
+    this.fetchTasks(); // Загружаем задачи из базы при монтировании
   }
+
+  // Метод для получения задач из API
+  fetchTasks = async () => {
+    try {
+      const response = await fetch(`${API_URL}/tasks`);
+      const tasks = await response.json();
+      this.setState({ notes: tasks });
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  };
 
   getStateForAssistant() {
     console.log('getStateForAssistant: this.state:', this.state);
@@ -78,9 +89,9 @@ export class App extends React.Component {
           title,
         })),
         ignored_words: [
-          'добавить','установить','запиши','поставь','закинь','напомнить', // addNote.sc
-          'удалить', 'удали',  // deleteNote.sc
-          'выполни', 'выполнил', 'сделал' // выполнил|сделал
+          'добавить', 'установить', 'запиши', 'поставь', 'закинь', 'напомнить',
+          'удалить', 'удали',
+          'выполни', 'выполнил', 'сделал',
         ],
       },
     };
@@ -94,54 +105,69 @@ export class App extends React.Component {
       switch (action.type) {
         case 'add_note':
           return this.add_note(action);
-
         case 'done_note':
           return this.done_note(action);
-
         case 'delete_note':
           return this.delete_note(action);
-
         default:
           throw new Error();
       }
     }
   }
 
-  add_note(action) {
+  // Добавление задачи через API
+  add_note = async (action) => {
     console.log('add_note', action);
-    this.setState({
-      notes: [
-        ...this.state.notes,
-        {
-          id: Math.random().toString(36).substring(7),
-          title: action.note,
-          completed: false,
+    try {
+      const response = await fetch(`${API_URL}/tasks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      ],
-    });
-  }
+        body: JSON.stringify({ title: action.note, completed: false }),
+      });
+      const newTask = await response.json();
+      this.setState({
+        notes: [...this.state.notes, newTask],
+      });
+    } catch (error) {
+      console.error('Error adding task:', error);
+    }
+  };
 
-  done_note(action) {
+  // Обновление задачи (выполнено/не выполнено) через API
+  done_note = async (action) => {
     console.log('done_note', action);
-    this.setState({
-      notes: this.state.notes.map((note) =>
-        note.id === action.id ? { ...note, completed: !note.completed } : note
-      ),
-    });
-  }
+    const task = this.state.notes.find((note) => note.id === action.id);
+    if (!task) return;
+
+    try {
+      const response = await fetch(`${API_URL}/tasks/${action.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title: task.title, completed: !task.completed }),
+      });
+      const updatedTask = await response.json();
+      this.setState({
+        notes: this.state.notes.map((note) =>
+          note.id === action.id ? updatedTask : note
+        ),
+      });
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
+  };
 
   _send_action_value(action_id, value) {
     const data = {
       action: {
         action_id: action_id,
-        parameters: {
-          // значение поля parameters может быть любым, но должно соответствовать серверной логике
-          value: value, // см.файл src/sc/noteDone.sc смартаппа в Studio Code
-        },
+        parameters: { value },
       },
     };
     const unsubscribe = this.assistant.sendData(data, (data) => {
-      // функция, вызываемая, если на sendData() был отправлен ответ
       const { type, payload } = data;
       console.log('sendData onData:', type, payload);
       unsubscribe();
@@ -149,7 +175,7 @@ export class App extends React.Component {
   }
 
   play_done_note(id) {
-    const completed = this.state.notes.find(({ id }) => id)?.completed;
+    const completed = this.state.notes.find((note) => note.id === id)?.completed;
     if (!completed) {
       const texts = ['Молодец!', 'Красавчик!', 'Супер!'];
       const idx = (Math.random() * texts.length) | 0;
@@ -157,12 +183,20 @@ export class App extends React.Component {
     }
   }
 
-  delete_note(action) {
+  // Удаление задачи через API
+  delete_note = async (action) => {
     console.log('delete_note', action);
-    this.setState({
-      notes: this.state.notes.filter(({ id }) => id !== action.id),
-    });
-  }
+    try {
+      await fetch(`${API_URL}/tasks/${action.id}`, {
+        method: 'DELETE',
+      });
+      this.setState({
+        notes: this.state.notes.filter((note) => note.id !== action.id),
+      });
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
+  };
 
   render() {
     console.log('render');
