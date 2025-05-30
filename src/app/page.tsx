@@ -6,30 +6,30 @@ import { GlowCard } from "@/components/GlowCard";
 export default function Home() {
   const router = useRouter();
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-black">
-      <div className="flex w-full max-w-3xl justify-between mb-20">
-        <Card
-          onClick={()=>router.push("/journal")}
-          className="cursor-pointer border-blue-400 border-2 bg-zinc-950 hover:shadow-blue-200"
+    <main className="min-h-screen flex flex-col items-center justify-center bg-transparent px-2 sm:px-4 py-8">
+      <div className="w-full max-w-2xl grid grid-cols-1 sm:grid-cols-2 gap-8 mb-16">
+        <button
+          onClick={() => router.push("/journal")}
+          className="rounded-2xl bg-gradient-to-br from-blue-400 to-cyan-500 shadow-lg hover:scale-105 transition text-white text-lg sm:text-xl font-bold py-8 px-4 w-full border-4 border-blue-200"
         >
-          <div className="px-10 py-7 text-xl text-center">Журнал</div>
-        </Card>
-        <Card
-          onClick={()=>router.push("/workouts")}
-          className="cursor-pointer border-green-400 border-2 bg-zinc-950 hover:shadow-green-200"
+          Журнал
+        </button>
+        <button
+          onClick={() => router.push("/workouts")}
+          className="rounded-2xl bg-gradient-to-br from-green-400 to-emerald-500 shadow-lg hover:scale-105 transition text-white text-lg sm:text-xl font-bold py-8 px-4 w-full border-4 border-green-200"
         >
-          <div className="px-10 py-7 text-xl text-center">Мои тренировки</div>
-        </Card>
+          Мои тренировки
+        </button>
       </div>
-      <GlowCard className="cursor-pointer mb-20" onClick={()=>router.push("/workouts")}>
-        начать<br />тренировку
-      </GlowCard>
-      <Card
-        className="cursor-pointer border-yellow-400 border-2 bg-zinc-950 hover:shadow-yellow-200"
-        onClick={()=>router.push("/exercises")}
-      >
-        <div className="px-10 py-7 text-xl text-center">База упражнений</div>
-      </Card>
+      <GlowCard className="cursor-pointer mb-16 w-44 h-44 sm:w-56 sm:h-56 text-xl sm:text-2xl font-bold" onClick={()=>router.push("/workouts")}>начать<br />тренировку</GlowCard>
+      <div className="w-full max-w-xs">
+        <button
+          className="rounded-2xl bg-[#27dbce] shadow-lg hover:scale-105 transition text-white text-lg sm:text-xl font-bold py-8 px-4 w-full border-4 border-[#acd4b4] mt-4"
+          onClick={() => router.push("/exercises")}
+        >
+          База упражнений
+        </button>
+      </div>
     </main>
   );
 }

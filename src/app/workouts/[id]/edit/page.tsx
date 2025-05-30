@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { getAllWorkouts, saveWorkout, removeWorkout, Workout, WorkoutExercise } from "@/lib/storage";
+import { BackButton } from "@/components/BackButton";
 
 type BaseExercise = {
   id: number;
@@ -83,48 +84,50 @@ export default function EditWorkoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#10151a] flex flex-col items-center pt-20">
-      <Card className="p-8 w-full max-w-2xl bg-[#16212e] border-[#234468] shadow-lg rounded-xl">
-        <h2 className="text-2xl font-extrabold mb-8 text-cyan-300 drop-shadow-md">Редактирование тренировки</h2>
+    <div className="min-h-screen bg-gradient-to-br from-white via-slate-100 to-cyan-50 text-slate-900 flex flex-col items-center pt-20">
+      <Card className="p-8 w-full max-w-2xl bg-white border-cyan-200 shadow-md rounded-xl">
+      <BackButton className="w-fit mb-6 bg-white border-cyan-300 text-cyan-700 shadow hover:bg-cyan-50 transition font-semibold px-6 py-2" />
+
+        <h2 className="text-2xl font-extrabold mb-8 text-cyan-700 drop-shadow-md">Редактирование тренировки</h2>
         <div className="flex gap-4 items-center mb-8">
           <Input
-            className="flex-1 bg-[#234468]/30 border-[#378fc8] text-white"
+            className="flex-1 bg-cyan-50 border-cyan-200 text-cyan-900"
             placeholder="Название тренировки"
             value={workoutName}
             onChange={e => setWorkoutName(e.target.value)}
           />
           <Dialog open={chooseExerciseOpen} onOpenChange={setChooseExerciseOpen}>
             <DialogTrigger asChild>
-              <Button type="button" variant="outline" className="font-bold text-cyan-200 border-cyan-400 hover:bg-cyan-400/10 rounded-lg">добавить упражнение</Button>
+              <Button type="button" variant="outline" className="font-bold text-cyan-700 border-cyan-400 hover:bg-cyan-100 rounded-lg">добавить упражнение</Button>
             </DialogTrigger>
-            <DialogContent className="bg-[#16212e] border-[#234468] max-w-lg w-full text-slate-100">
+            <DialogContent className="bg-white border-cyan-200 max-w-lg w-full text-slate-900">
               <DialogHeader>
-                <DialogTitle className="text-cyan-300 font-bold">Добавить упражнение</DialogTitle>
+                <DialogTitle className="text-cyan-700 font-bold">Добавить упражнение</DialogTitle>
               </DialogHeader>
-              <div className="mb-2 font-bold text-slate-200">База упражнений:</div>
+              <div className="mb-2 font-bold text-cyan-700">База упражнений:</div>
               <div className="grid grid-cols-2 gap-3 max-h-48 overflow-y-auto mb-4">
                 {baseExercises.map((ex: BaseExercise) => (
                   <Card
                     key={ex.id}
-                    className={`cursor-pointer border transition border-neutral-700 hover:border-blue-400 bg-[#1e2635] p-3 ${selectedExercise?.id === ex.id ? "border-blue-400" : ""}`}
+                    className={`cursor-pointer border transition border-cyan-200 hover:border-blue-400 bg-cyan-50 p-3 ${selectedExercise?.id === ex.id ? "border-blue-400" : ""}`}
                     onClick={() => setSelectedExercise(ex)}
                   >
-                    <div className="font-bold text-white">{ex.name}</div>
-                    <div className="text-xs text-cyan-400">{ex.type}</div>
-                    <div className="text-xs text-neutral-400 mt-1">{ex.description}</div>
+                    <div className="font-bold text-cyan-900">{ex.name}</div>
+                    <div className="text-xs text-cyan-500">{ex.type}</div>
+                    <div className="text-xs text-cyan-700 mt-1">{ex.description}</div>
                   </Card>
                 ))}
               </div>
-              <Button onClick={() => setAddNewExerciseOpen(true)} variant="secondary" className="mb-4 w-full bg-[#113f5b] text-cyan-200 hover:bg-cyan-900/30 font-bold rounded-lg">+ Новое упражнение</Button>
+              <Button onClick={() => setAddNewExerciseOpen(true)} variant="secondary" className="mb-4 w-full bg-cyan-200 text-cyan-900 hover:bg-cyan-300 font-bold rounded-lg">+ Новое упражнение</Button>
               {selectedExercise && (
-                <div className="mt-2 border-t border-neutral-800 pt-2 space-y-1">
-                  <div className="font-bold text-slate-200">{selectedExercise.name}</div>
+                <div className="mt-2 border-t border-cyan-200 pt-2 space-y-1">
+                  <div className="font-bold text-cyan-700 mb-2">{selectedExercise.name}</div>
                   <div className="flex gap-2 mb-2">
                     <Input
                       placeholder="Подходы"
                       value={sets}
                       onChange={e => setSets(e.target.value)}
-                      className="w-32 bg-[#234468]/20 border-[#378fc8] text-white"
+                      className="w-32 bg-cyan-50 border-cyan-200 text-cyan-900"
                       type="number"
                       min={1}
                     />
@@ -132,7 +135,7 @@ export default function EditWorkoutPage() {
                       placeholder="Повторы/сек"
                       value={target}
                       onChange={e => setTarget(e.target.value)}
-                      className="w-40 bg-[#234468]/20 border-[#378fc8] text-white"
+                      className="w-40 bg-cyan-50 border-cyan-200 text-cyan-900"
                     />
                   </div>
                   <Button
@@ -146,27 +149,27 @@ export default function EditWorkoutPage() {
               )}
               {/* Вложенный диалог для нового упражнения */}
               <Dialog open={addNewExerciseOpen} onOpenChange={setAddNewExerciseOpen}>
-                <DialogContent className="bg-[#1e2635] border-[#234468] max-w-md w-full rounded-xl">
+                <DialogContent className="bg-white border-cyan-200 max-w-md w-full rounded-xl text-slate-900">
                   <DialogHeader>
-                    <DialogTitle className="text-cyan-300">Новое упражнение</DialogTitle>
+                    <DialogTitle className="text-cyan-700">Новое упражнение</DialogTitle>
                   </DialogHeader>
-                  <Label className="mb-1">Название</Label>
+                  <Label className="mb-1 text-cyan-700">Название</Label>
                   <Input
                     value={newExercise.name}
                     onChange={e => setNewExercise({ ...newExercise, name: e.target.value })}
                     placeholder="Название"
-                    className="mb-2 bg-[#234468]/30 border-[#378fc8] text-white"
+                    className="mb-2 bg-cyan-50 border-cyan-200 text-cyan-900"
                   />
-                  <Label className="mb-1">Описание</Label>
+                  <Label className="mb-1 text-cyan-700">Описание</Label>
                   <Textarea
                     value={newExercise.description}
                     onChange={e => setNewExercise({ ...newExercise, description: e.target.value })}
                     placeholder="Описание"
-                    className="mb-2 bg-[#234468]/30 border-[#378fc8] text-white"
+                    className="mb-2 bg-cyan-50 border-cyan-200 text-cyan-900"
                   />
-                  <Label className="mb-1">Тип</Label>
+                  <Label className="mb-1 text-cyan-700">Тип</Label>
                   <select
-                    className="rounded px-3 py-2 mb-2 bg-[#234468]/30 border border-[#378fc8] text-white"
+                    className="rounded px-3 py-2 mb-2 bg-cyan-50 border border-cyan-200 text-cyan-900"
                     value={newExercise.type}
                     onChange={e => setNewExercise({ ...newExercise, type: e.target.value })}
                   >
@@ -178,7 +181,7 @@ export default function EditWorkoutPage() {
                       placeholder="Подходы"
                       value={sets}
                       onChange={e => setSets(e.target.value)}
-                      className="w-32 bg-[#234468]/30 border-[#378fc8] text-white"
+                      className="w-32 bg-cyan-50 border-cyan-200 text-cyan-900"
                       type="number"
                       min={1}
                     />
@@ -186,14 +189,14 @@ export default function EditWorkoutPage() {
                       placeholder="Повторы/сек"
                       value={target}
                       onChange={e => setTarget(e.target.value)}
-                      className="w-40 bg-[#234468]/30 border-[#378fc8] text-white"
+                      className="w-40 bg-cyan-50 border-cyan-200 text-cyan-900"
                     />
                   </div>
                   <div className="flex gap-2 justify-end mt-2">
                     <Button
                       onClick={handleAddNewExerciseToWorkoutAndBase}
                       variant="default"
-                      className="bg-gradient-to-r from-cyan-500 to-emerald-600 font-bold rounded-lg"
+                      className="bg-gradient-to-r from-cyan-500 to-emerald-600 font-bold rounded-lg text-white"
                     >
                       Добавить в тренировку и базу
                     </Button>
@@ -206,12 +209,12 @@ export default function EditWorkoutPage() {
         {/* Список упражнений */}
         <div className="space-y-6 mb-8">
           {exercises.map((ex, idx) => (
-            <div key={idx} className="flex items-center gap-3 border-b border-neutral-700 pb-3">
-              <Input value={ex.name} readOnly className="w-64 bg-[#234468]/30 border-[#378fc8] text-cyan-200" placeholder="Название" />
-              <Input value={ex.sets} readOnly className="w-24 bg-[#234468]/30 border-[#378fc8] text-white" placeholder="Кол-во подходов" />
-              <Input value={ex.target} readOnly className="w-40 bg-[#234468]/30 border-[#378fc8] text-white" placeholder="Целевое" />
-              <div className="text-xs ml-2 text-cyan-400 px-2">{ex.type}</div>
-              <Button variant="destructive" onClick={() => handleRemoveExercise(idx)}>Удалить</Button>
+            <div key={idx} className="flex items-center gap-3 border-b border-cyan-100 pb-3">
+              <Input value={ex.name} readOnly className="w-64 bg-white border-cyan-200 text-cyan-900" placeholder="Название" />
+              <Input value={ex.sets} readOnly className="w-24 bg-white border-cyan-200 text-cyan-900" placeholder="Кол-во подходов" />
+              <Input value={ex.target} readOnly className="w-40 bg-white border-cyan-200 text-cyan-900" placeholder="Целевое" />
+              <div className="text-xs ml-2 text-cyan-500 px-2 font-semibold">{ex.type}</div>
+              <Button variant="destructive" onClick={() => handleRemoveExercise(idx)} className="bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-2 rounded-lg">Удалить</Button>
             </div>
           ))}
         </div>
