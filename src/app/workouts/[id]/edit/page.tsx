@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { getAllWorkouts, saveWorkout, removeWorkout, Workout, WorkoutExercise } from "@/lib/storage";
 import { BackButton } from "@/components/BackButton";
 
 type BaseExercise = {
@@ -15,6 +14,15 @@ type BaseExercise = {
   name: string;
   type: string;
   description: string;
+};
+
+type WorkoutExercise = {
+  id: number;
+  name: string;
+  type: string;
+  description: string;
+  sets: string;
+  target: string;
 };
 
 const BASE_EXERCISES: BaseExercise[] = [
@@ -45,42 +53,58 @@ export default function EditWorkoutPage() {
   const [target, setTarget] = useState("");
 
   useEffect(() => {
+    // Получаем базу упражнений с сервера
+    fetch("http://localhost:8000/api/exercises")
+      .then(res => res.json())
+      .then(setBaseExercises);
+  }, []);
+  
+  useEffect(() => {
     if (isEdit) {
-      const workouts = getAllWorkouts();
-      const w = workouts.find(x => x.id === workoutId);
-      if (w) {
-        setWorkoutName(w.name);
-        setExercises(w.exercises);
-      }
+      fetch(`http://localhost:8000/api/workouts/${workoutId}`)
+        .then(res => res.json())
+        .then(w => {
+          setWorkoutName(w.name);
+          setExercises(w.exercises);
+        });
     }
   }, [workoutId, isEdit]);
-
-  function handleAddExerciseToWorkout(ex: BaseExercise) {
-    setExercises([...exercises, { ...ex, sets, target }]);
-    setChooseExerciseOpen(false); setSelectedExercise(null); setSets(""); setTarget("");
-  }
+  
   function handleAddNewExerciseToWorkoutAndBase() {
-    const newId = Date.now();
-    const toAdd = { ...newExercise, id: newId };
-    setExercises([...exercises, { ...toAdd, sets, target }]);
-    setBaseExercises([...baseExercises, toAdd]);
-    setAddNewExerciseOpen(false); setChooseExerciseOpen(false); setNewExercise({ id: -1, name: "", description: "", type: "Динамика" }); setSets(""); setTarget("");
+    // Сохраняем новое упражнение в базу на сервере
+    fetch("http://localhost:8000/api/exercises", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newExercise)
+    })
+      .then(res => res.json())
+      .then(toAdd => {
+        setExercises([...exercises, { ...toAdd, sets, target }]);
+        setBaseExercises([...baseExercises, toAdd]);
+        setAddNewExerciseOpen(false); setChooseExerciseOpen(false); setNewExercise({ id: -1, name: "", description: "", type: "Динамика" }); setSets(""); setTarget("");
+      });
   }
-  function handleRemoveExercise(idx: number) {
-    setExercises(exercises.filter((_, i) => i !== idx));
-  }
+  
   function handleSave() {
-    const wrk: Workout = {
+    const wrk = {
       id: workoutId ? workoutId : Date.now(),
       name: workoutName,
       exercises
     };
-    saveWorkout(wrk);
-    router.push("/workouts");
+    fetch(`http://localhost:8000/api/workouts${isEdit ? `/${wrk.id}` : ""}`, {
+      method: isEdit ? "PUT" : "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(wrk)
+    }).then(() => router.push("/workouts"));
   }
+  
   function handleDeleteWorkout() {
-    if (workoutId) removeWorkout(workoutId);
-    router.push("/workouts");
+    if (workoutId) {
+      fetch(`http://localhost:8000/api/workouts/${workoutId}`, { method: "DELETE" })
+        .then(() => router.push("/workouts"));
+    } else {
+      router.push("/workouts");
+    }
   }
 
   return (

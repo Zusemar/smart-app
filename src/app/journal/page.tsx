@@ -1,15 +1,28 @@
 "use client";
 import { Card } from "@/components/ui/card";
 import { BackButton } from "@/components/BackButton";
-import { getJournal, JournalEntry } from "@/lib/storage";
 import { useState, useEffect } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+
+type JournalExerciseResult = {
+  name: string;
+  type: string;
+  result: string;
+};
+
+type JournalEntry = {
+  date: string;
+  workout: string;
+  exercises: JournalExerciseResult[];
+};
 
 export default function JournalPage() {
   const [journal, setJournal] = useState<JournalEntry[]>([]);
 
   useEffect(() => {
-    setJournal(getJournal());
+    fetch("http://localhost:8000/api/journal")
+      .then(res => res.json())
+      .then(setJournal);
   }, []);
 
   return (

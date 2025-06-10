@@ -3,15 +3,22 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { getAllWorkouts, Workout } from "@/lib/storage";
 import { BackButton } from "@/components/BackButton";
+
+type Workout = {
+  id: number;
+  name: string;
+  exercises: any[];
+};
 
 export default function WorkoutsPage() {
   const router = useRouter();
   const [workouts, setWorkouts] = useState<Workout[]>([]);
 
   useEffect(() => {
-    setWorkouts(getAllWorkouts());
+    fetch("http://localhost:8000/api/workouts")
+      .then(res => res.json())
+      .then(setWorkouts);
   }, []);
 
   return (

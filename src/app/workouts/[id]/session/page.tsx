@@ -24,13 +24,17 @@ export default function WorkoutSessionPage() {
   const [selectedTime, setSelectedTime] = useState(0);
 
   useEffect(() => {
-    const w = getAllWorkouts().find(x => x.id === workoutId);
-    setWorkout(w || null);
-    setCurrentIdx(0);
-    setIsStarted(false);
-    setIsFinished(false);
-    setTimer(0);
-    setReps(0);
+    fetch("http://localhost:8000/api/workouts")
+      .then(res => res.json())
+      .then((workouts: Workout[]) => {
+        const w = workouts.find(x => x.id === workoutId);
+        setWorkout(w || null);
+        setCurrentIdx(0);
+        setIsStarted(false);
+        setIsFinished(false);
+        setTimer(0);
+        setReps(0);
+      });
   }, [workoutId]);
 
   useEffect(() => {
@@ -77,16 +81,14 @@ export default function WorkoutSessionPage() {
   function handleFinish() {
     if (intervalId) clearInterval(intervalId);
     setIsStarted(false);
-    // --- Сохраняем результат тренировки в журнал ---
     if (workout) {
       const today = new Date();
       const dateStr = today.toISOString().slice(0, 10);
       const results: JournalExerciseResult[] = workout.exercises.map((ex, idx) => {
         if (idx === currentIdx) {
           if (ex.type === "Статика") {
-            // Считаем разницу между выбранным временем и тем, что осталось на таймере
             let done = selectedTime - timer;
-            if (!isStarted) done = selectedTime; // если не запускали, просто выбранное время
+            if (!isStarted) done = selectedTime;
             const min = Math.floor(done / 60);
             const sec = (done % 60).toString().padStart(2, "0");
             return { name: ex.name, type: ex.type, result: `${min}:${sec}` };
@@ -97,7 +99,12 @@ export default function WorkoutSessionPage() {
           return { name: ex.name, type: ex.type, result: ex.target };
         }
       });
-      saveJournalEntry({ date: dateStr, workout: workout.name, exercises: results });
+      // Сохраняем результат тренировки в журнал через API
+      fetch("http://localhost:8000/api/journal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date: dateStr, workout: workout.name, exercises: results })
+      });
     }
     setIsFinished(true);
   }

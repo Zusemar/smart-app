@@ -1,37 +1,49 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BackButton } from "@/components/BackButton";
 
-const MOCK = [
-  {id: 1, name: "Жим лёжа", type: "Динамика"},
-  {id: 2, name: "Планка", type: "Статика"}
-];
+type Exercise = {
+  id: number;
+  name: string;
+  type: string;
+  description?: string;
+};
 
 export default function ExercisesPage() {
-  const [exercises, setExercises] = useState(MOCK);
+  const [exercises, setExercises] = useState<Exercise[]>([]);
   const [newName, setNewName] = useState("");
   const [newType, setNewType] = useState("Динамика");
 
-  const addExercise = () => {
+  useEffect(() => {
+    fetch("http://localhost:8000/api/exercises")
+      .then(res => res.json())
+      .then(setExercises);
+  }, []);
+
+  const addExercise = async () => {
     if (newName.trim()) {
-      setExercises(e => [
-        ...e,
-        { id: Date.now(), name: newName, type: newType }
-      ]);
-      setNewName("");  
-      setNewType("Динамика");
+      const res = await fetch("http://localhost:8000/api/exercises", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newName, type: newType, description: "" })
+      });
+      if (res.ok) {
+        const newEx = await res.json();
+        setExercises(e => [...e, newEx]);
+        setNewName("");
+        setNewType("Динамика");
+      }
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-slate-100 to-cyan-50 text-slate-900 flex flex-col items-center pt-20">
       <div className="w-full max-w-md">
-      <BackButton className="w-fit mb-6 bg-white border-cyan-300 text-cyan-700 shadow hover:bg-cyan-50 transition font-semibold px-6 py-2" />
-
+        <BackButton className="w-fit mb-6 bg-white border-cyan-300 text-cyan-700 shadow hover:bg-cyan-50 transition font-semibold px-6 py-2" />
         <h1 className="text-3xl font-extrabold mb-10 text-cyan-700 drop-shadow-md">База упражнений</h1>
       </div>
       <div className="flex flex-col w-full max-w-md gap-4">
