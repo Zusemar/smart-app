@@ -20,7 +20,7 @@ export default function JournalPage() {
   const [journal, setJournal] = useState<JournalEntry[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/journal")
+    fetch("https://localhost:8000/api/journal")
       .then(res => res.json())
       .then(setJournal);
   }, []);
