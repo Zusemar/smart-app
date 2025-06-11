@@ -19,14 +19,14 @@ export default function ExercisesPage() {
   const [newType, setNewType] = useState("Динамика");
 
   useEffect(() => {
-    fetch("https://localhost:8000/api/exercises")
+    fetch("http://localhost:8000/api/exercises")
       .then(res => res.json())
       .then(setExercises);
   }, []);
 
   const addExercise = async () => {
     if (newName.trim()) {
-      const res = await fetch("https://localhost:8000/api/exercises", {
+      const res = await fetch("http://localhost:8000/api/exercises", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: newName, type: newType, description: "" })

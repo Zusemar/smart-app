@@ -6,6 +6,8 @@ from sqlalchemy import create_engine, Column, Integer, String, JSON, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import datetime
+from fastapi.responses import JSONResponse
+from fastapi.requests import Request
 
 DATABASE_URL = "postgresql://postgres:131325@localhost:5433/smartapp_db"
 
@@ -19,6 +21,8 @@ class Workout(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
     exercises = Column(JSON, nullable=False)
+
+
 
 class Exercise(Base):
     __tablename__ = "exercises"
@@ -58,7 +62,7 @@ class JournalExerciseResult(BaseModel):
     result: str
 
 class JournalEntrySchema(BaseModel):
-    id: Optional[int]
+    id: Optional[int] = None
     date: str
     workout: str
     exercises: List[JournalExerciseResult]
@@ -72,6 +76,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(422)
+async def validation_exception_handler(request: Request, exc):
+    return (JSONResponse(
+        status_code=422,
+        content={
+            "error": exc.errors(),
+            "body": await request.json()
+        }
+    ))
 
 # --- Workouts ---
 @app.get("/api/workouts", response_model=List[WorkoutSchema])
@@ -114,6 +128,7 @@ def update_workout(workout_id: int, workout: WorkoutSchema):
     db.close()
     return WorkoutSchema(id=w.id, name=w.name, exercises=w.exercises)
 
+
 @app.delete("/api/workouts/{workout_id}")
 def delete_workout(workout_id: int):
     db = SessionLocal()
@@ -154,6 +169,7 @@ def get_journal():
 
 @app.post("/api/journal", response_model=JournalEntrySchema)
 def add_journal_entry(entry: JournalEntrySchema):
+    print("Adding journal entry:")
     db = SessionLocal()
     e = JournalEntry(date=entry.date, workout=entry.workout, exercises=[ex.dict() for ex in entry.exercises])
     db.add(e)

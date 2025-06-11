@@ -16,7 +16,7 @@ export default function WorkoutsPage() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
 
   useEffect(() => {
-    fetch("https://localhost:8000/api/workouts")
+    fetch("http://localhost:8000/api/workouts")
       .then(res => res.json())
       .then(setWorkouts);
   }, []);

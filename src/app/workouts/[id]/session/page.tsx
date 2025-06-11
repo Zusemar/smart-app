@@ -24,7 +24,7 @@ export default function WorkoutSessionPage() {
   const [selectedTime, setSelectedTime] = useState(0);
 
   useEffect(() => {
-    fetch("https://localhost:8000/api/workouts")
+    fetch("http://localhost:8000/api/workouts")
       .then(res => res.json())
       .then((workouts: Workout[]) => {
         const w = workouts.find(x => x.id === workoutId);
@@ -84,7 +84,7 @@ export default function WorkoutSessionPage() {
     if (workout) {
       const today = new Date();
       const dateStr = today.toISOString().slice(0, 10);
-      const results: JournalExerciseResult[] = workout.exercises.map((ex, idx) => {
+      const results: JournalExerciseResult[] = workout.exercises.map((ex: WorkoutExercise, idx: number) => {
         if (idx === currentIdx) {
           if (ex.type === "Статика") {
             let done = selectedTime - timer;
@@ -93,19 +93,19 @@ export default function WorkoutSessionPage() {
             const sec = (done % 60).toString().padStart(2, "0");
             return { name: ex.name, type: ex.type, result: `${min}:${sec}` };
           } else {
-            return { name: ex.name, type: ex.type, result: `${reps > 0 ? reps : ex.target}` };
+            return { name: ex.name, type: ex.type, result: `${reps > 0 ? reps : ex.target}` };  // 👈 оборачиваем в ``!
           }
         } else {
-          return { name: ex.name, type: ex.type, result: ex.target };
+          return { name: ex.name, type: ex.type, result: `${ex.target}` };  // 👈 тоже здесь!
         }
       });
+      ;
       // Сохраняем результат тренировки в журнал через API
-      fetch("https://localhost:8000/api/journal", {
+      fetch("http://localhost:8000/api/journal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ date: dateStr, workout: workout.name, exercises: results })
       });
-    }
     setIsFinished(true);
   }
   function handleNext() {
