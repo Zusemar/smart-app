@@ -9,7 +9,7 @@ import datetime
 from fastapi.responses import JSONResponse
 from fastapi.requests import Request
 
-DATABASE_URL = "postgresql://alex@localhost:5432/smartapp_db"
+DATABASE_URL = "postgresql://postgres:131325@localhost:5433/smartapp_db"
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
