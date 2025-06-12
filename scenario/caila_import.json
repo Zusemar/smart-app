@@ -1,0 +1,65 @@
+{
+  "project" : {
+    "id" : "smart_app-6736029-Bsj",
+    "name" : "smart_app-6736029-Bsj",
+    "folder" : "/jaicp"
+  },
+  "settings" : {
+    "language" : "ru",
+    "spellingCorrection" : false,
+    "classificationAlgorithm" : "sts",
+    "timezone" : "UTC",
+    "shared" : false,
+    "businessShared" : false,
+    "business" : false
+  },
+  "intents" : [ {
+    "id" : 925082,
+    "path" : "/тренировка",
+    "enabled" : true,
+    "businessShared" : false,
+    "business" : false,
+    "phrases" : [ ],
+    "patterns" : [ ],
+    "slots" : [ {
+      "name" : "Workout",
+      "entity" : "Workout",
+      "required" : true,
+      "prompts" : [ "Какую тренировку?" ],
+      "array" : false,
+      "client" : false
+    } ]
+  } ],
+  "entities" : [ {
+    "entity" : {
+      "id" : 724084,
+      "name" : "Workout",
+      "enabled" : true,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : false,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "subject" : "название тренировки"
+    },
+    "records" : [ {
+      "id" : 26401467,
+      "type" : "synonyms",
+      "rule" : [ "грудь" ],
+      "value" : ""
+    }, {
+      "id" : 26401468,
+      "type" : "synonyms",
+      "rule" : [ "ноги" ],
+      "value" : ""
+    }, {
+      "id" : 26391147,
+      "type" : "synonyms",
+      "rule" : [ "спина" ],
+      "value" : ""
+    } ]
+  } ],
+  "enabledSystemEntities" : [ "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url" ]
+}

@@ -180,7 +180,7 @@ export default function WorkoutSessionPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white via-slate-100 to-cyan-50">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white via-slate-100 to-cyan-50 pb-[72px]">
       <Card className="w-[90vw] max-w-3xl min-h-[500px] min-w-[320px] flex flex-col justify-between p-0 overflow-hidden">
         {/* Top Section */}
         <div className="flex items-center justify-between px-8 py-4 border-b bg-cyan-50">

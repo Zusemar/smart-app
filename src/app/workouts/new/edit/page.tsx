@@ -111,7 +111,7 @@ export default function EditWorkoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-slate-100 to-cyan-50 text-slate-900 flex flex-col items-center pt-20">
+    <div className="min-h-screen bg-gradient-to-br from-white via-slate-100 to-cyan-50 text-slate-900 flex flex-col items-center pt-20 pb-[72px]">
       <Card className="p-8 w-full max-w-2xl bg-white border-cyan-200 shadow-md rounded-xl">
         <BackButton className="w-fit mb-6 bg-white border-cyan-300 text-cyan-700 shadow hover:bg-cyan-50 transition font-semibold px-6 py-2" />
         <h2 className="text-2xl font-extrabold mb-8 text-cyan-700 drop-shadow-md">Редактирование тренировки</h2>
