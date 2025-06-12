@@ -44,7 +44,7 @@ export default function WorkoutSessionPage() {
   const [results, setResults] = useState<JournalExerciseResult[]>([]);
 
   useEffect(() => {
-    fetch(`https://localhost:8000/api/workouts/${workoutId}`)
+    fetch(`http://localhost:8000/api/workouts/${workoutId}`)
       .then(res => res.json())
       .then((workout: Workout) => {
         setWorkout(workout);
@@ -150,7 +150,7 @@ export default function WorkoutSessionPage() {
           return { name: ex.name, type: ex.type, result: `${ex.target}` };
         }
       });
-      fetch("https://localhost:8000/api/journal", {
+      fetch("http://localhost:8000/api/journal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ date: dateStr, workout: workout.name, exercises: fullResults })
