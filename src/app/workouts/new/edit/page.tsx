@@ -54,14 +54,14 @@ export default function EditWorkoutPage() {
 
   useEffect(() => {
     // Получаем базу упражнений с сервера
-    fetch("http://localhost:8000/api/exercises")
+    fetch("https://localhost:8000/api/exercises")
       .then(res => res.json())
       .then(setBaseExercises);
   }, []);
 
   useEffect(() => {
     if (isEdit) {
-      fetch(`http://localhost:8000/api/workouts/${workoutId}`)
+      fetch(`https://localhost:8000/api/workouts/${workoutId}`)
         .then(res => res.json())
         .then(w => {
           setWorkoutName(w.name);
@@ -75,7 +75,7 @@ export default function EditWorkoutPage() {
     setChooseExerciseOpen(false); setSelectedExercise(null); setSets(""); setTarget("");
   }
   function handleAddNewExerciseToWorkoutAndBase() {
-    fetch("http://localhost:8000/api/exercises", {
+    fetch("https://localhost:8000/api/exercises", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newExercise)
@@ -94,7 +94,7 @@ export default function EditWorkoutPage() {
       name: workoutName,
       exercises
     };
-    fetch(`http://localhost:8000/api/workouts${isEdit ? `/${wrk.id}` : ""}`, {
+    fetch(`https://localhost:8000/api/workouts${isEdit ? `/${wrk.id}` : ""}`, {
       method: isEdit ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(wrk)
@@ -103,7 +103,7 @@ export default function EditWorkoutPage() {
   
   function handleDeleteWorkout() {
     if (workoutId) {
-      fetch(`http://localhost:8000/api/workouts/${workoutId}`, { method: "DELETE" })
+      fetch(`https://localhost:8000/api/workouts/${workoutId}`, { method: "DELETE" })
         .then(() => router.push("/workouts"));
     } else {
       router.push("/workouts");
