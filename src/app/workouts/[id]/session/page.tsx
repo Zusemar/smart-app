@@ -24,7 +24,7 @@ export default function WorkoutSessionPage() {
   const [selectedTime, setSelectedTime] = useState(0);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/workouts")
+    fetch("https://localhost:8000/api/workouts")
       .then(res => res.json())
       .then((workouts: Workout[]) => {
         const w = workouts.find(x => x.id === workoutId);
@@ -101,7 +101,7 @@ export default function WorkoutSessionPage() {
       });
       ;
       // Сохраняем результат тренировки в журнал через API
-      fetch("http://localhost:8000/api/journal", {
+      fetch("https://localhost:8000/api/journal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ date: dateStr, workout: workout.name, exercises: results })
