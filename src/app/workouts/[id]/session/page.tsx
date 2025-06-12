@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { getAssistant } from "@/lib/assistant";
 
 // Types
 interface WorkoutExercise {
@@ -33,6 +34,8 @@ export default function WorkoutSessionPage() {
   const params = useParams();
   const router = useRouter();
   const workoutId = Number(params.id);
+
+  // Все хуки только здесь!
   const [workout, setWorkout] = useState<Workout | null>(null);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [timer, setTimer] = useState(0);
@@ -42,6 +45,7 @@ export default function WorkoutSessionPage() {
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
   const [selectedTime, setSelectedTime] = useState(0);
   const [results, setResults] = useState<JournalExerciseResult[]>([]);
+  const [assistantMessage, setAssistantMessage] = useState<string>("");
 
   useEffect(() => {
     fetch(`http://localhost:8000/api/workouts/${workoutId}`)
@@ -72,10 +76,110 @@ export default function WorkoutSessionPage() {
     if (intervalId) clearInterval(intervalId);
   }, [currentIdx, workout]);
 
+  useEffect(() => {
+    if (!workout) return;
+    const ex = workout.exercises[currentIdx];
+    const assistant = getAssistant();
+    assistant.setRouter(router);
+    const removeHandler = assistant.addCommandHandler((command) => {
+      if (!command.action) return;
+      console.log('Assistant command:', command.action.type, command);
+      switch (command.action.type) {
+        case "start_exercise":
+          if (ex.type === "Статика") handleStartStatic();
+          if (ex.type === "Динамика") handleStartDynamic();
+          setAssistantMessage("Начинаем упражнение");
+          console.log('Начинаем упражнение');
+          break;
+        case "stop_exercise":
+          if (intervalId) clearInterval(intervalId);
+          setIsStarted(false);
+          setAssistantMessage("Останавливаю упражнение");
+          console.log('Останавливаю упражнение');
+          break;
+        case "next_exercise":
+          setCurrentIdx(i => {
+            const nextIdx = i + 1;
+            if (nextIdx < workout.exercises.length) {
+              console.log('Переходим к следующему упражнению', nextIdx);
+              setAssistantMessage("Переходим к следующему упражнению");
+            } else {
+              console.log('Тренировка завершена');
+              setAssistantMessage("Тренировка завершена");
+            }
+            return nextIdx;
+          });
+          handleNext();
+          break;
+        case "prev_exercise":
+          if (currentIdx > 0) {
+            setCurrentIdx(i => {
+              const prevIdx = i - 1;
+              console.log('Возвращаюсь к предыдущему упражнению', prevIdx);
+              setAssistantMessage("Возвращаюсь к предыдущему упражнению");
+              return prevIdx;
+            });
+          }
+          break;
+        case "repeat_exercise":
+          if (ex.type === "Статика") {
+            setTimer(selectedTime);
+            setIsStarted(false);
+            if (intervalId) clearInterval(intervalId);
+          } else if (ex.type === "Динамика") {
+            setReps(Number(ex.target) || 0);
+            setIsStarted(false);
+          }
+          setAssistantMessage("Повторяю упражнение сначала");
+          console.log('Повторяю упражнение сначала');
+          break;
+        case "finish_workout":
+          handleFinish();
+          setAssistantMessage("Завершаю тренировку");
+          console.log('Завершаю тренировку');
+          break;
+        case "increase_reps":
+          handleChangeReps(1);
+          setAssistantMessage("Добавляю повторение");
+          console.log('Добавляю повторение');
+          break;
+        case "decrease_reps":
+          handleChangeReps(-1);
+          setAssistantMessage("Убираю повторение");
+          console.log('Убираю повторение');
+          break;
+        case "increase_time":
+          handleChangeTime(10);
+          setAssistantMessage("Добавляю 10 секунд");
+          console.log('Добавляю 10 секунд');
+          break;
+        case "decrease_time":
+          handleChangeTime(-10);
+          setAssistantMessage("Убираю 10 секунд");
+          console.log('Убираю 10 секунд');
+          break;
+        case "fallback":
+          setAssistantMessage(
+            "Скажи, например, 'начать упражнение', 'следующее упражнение', 'добавить повторение', 'закончить тренировку'..."
+          );
+          console.log('Fallback');
+          break;
+        default:
+          console.log('Unknown command:', command.action.type);
+          break;
+      }
+    });
+    const removeMsg = assistant.addMessageCallback((msg) => setAssistantMessage(msg));
+    return () => {
+      removeHandler();
+      removeMsg();
+    };
+  }, [router, workout, currentIdx, intervalId, selectedTime, reps, isStarted]);
+
+  // --- Только после всех хуков идут любые return! ---
   if (!workout) {
     return <div className="flex items-center justify-center min-h-screen">Тренировка не найдена</div>;
   }
-
   if (isFinished) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-8">
@@ -191,6 +295,12 @@ export default function WorkoutSessionPage() {
             </div>
           )}
         </div>
+        {/* Assistant message */}
+        {assistantMessage && (
+          <div className="mx-8 my-2 p-3 bg-white bg-opacity-80 rounded shadow text-black text-center">
+            {assistantMessage}
+          </div>
+        )}
 
         {/* Center Section */}
         <div className="flex flex-1 items-center justify-between px-8 py-6 gap-8">
