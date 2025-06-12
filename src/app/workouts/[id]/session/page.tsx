@@ -3,10 +3,29 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { getAllWorkouts, Workout, WorkoutExercise, getJournal, saveJournalEntry, JournalEntry, JournalExerciseResult } from "@/lib/storage";
+
+// Types
+interface WorkoutExercise {
+  name: string;
+  type: string;
+  target: string;
+  sets?: string;
+}
+
+interface Workout {
+  id: number;
+  name: string;
+  exercises: WorkoutExercise[];
+}
+
+interface JournalExerciseResult {
+  name: string;
+  type: string;
+  result: string;
+}
 
 function getVideoUrl(ex: WorkoutExercise) {
-  // Заглушка: в реальном проекте тут может быть ссылка на видео
+  // Placeholder: in a real project this would be a video link
   return "https://www.w3schools.com/html/mov_bbb.mp4";
 }
 
@@ -22,18 +41,22 @@ export default function WorkoutSessionPage() {
   const [isFinished, setIsFinished] = useState(false);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
   const [selectedTime, setSelectedTime] = useState(0);
+  const [results, setResults] = useState<JournalExerciseResult[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/workouts")
+    fetch(`http://localhost:8000/api/workouts/${workoutId}`)
       .then(res => res.json())
-      .then((workouts: Workout[]) => {
-        const w = workouts.find(x => x.id === workoutId);
-        setWorkout(w || null);
+      .then((workout: Workout) => {
+        setWorkout(workout);
         setCurrentIdx(0);
         setIsStarted(false);
         setIsFinished(false);
         setTimer(0);
         setReps(0);
+        setResults([]);
+      })
+      .catch(error => {
+        console.error("Error fetching workout:", error);
       });
   }, [workoutId]);
 
@@ -52,6 +75,7 @@ export default function WorkoutSessionPage() {
   if (!workout) {
     return <div className="flex items-center justify-center min-h-screen">Тренировка не найдена</div>;
   }
+
   if (isFinished) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-8">
@@ -67,7 +91,7 @@ export default function WorkoutSessionPage() {
   const ex = workout.exercises[currentIdx];
   const isLast = currentIdx === workout.exercises.length - 1;
 
-  // --- Статика ---
+  // --- Static Exercise Functions ---
   function handleStartStatic() {
     setIsStarted(true);
     setTimer(selectedTime);
@@ -75,50 +99,82 @@ export default function WorkoutSessionPage() {
     const id = setInterval(() => setTimer(t => (t > 0 ? t - 1 : 0)), 1000);
     setIntervalId(id);
   }
+
   function handleChangeTime(delta: number) {
     if (!isStarted) setSelectedTime(t => Math.max(0, t + delta));
   }
+
+  function saveCurrentResult() {
+    if (!workout) return;
+    const ex = workout.exercises[currentIdx];
+    let result: string;
+    if (ex.type === "Статика") {
+      let done = selectedTime - timer;
+      if (!isStarted) done = selectedTime;
+      const min = Math.floor(done / 60);
+      const sec = (done % 60).toString().padStart(2, "0");
+      result = `${min}:${sec}`;
+    } else {
+      result = `${reps > 0 ? reps : ex.target}`;
+    }
+    setResults(prev => {
+      const updated = [...prev];
+      updated[currentIdx] = { name: ex.name, type: ex.type, result };
+      return updated;
+    });
+  }
+
   function handleFinish() {
     if (intervalId) clearInterval(intervalId);
     setIsStarted(false);
     if (workout) {
+      const ex = workout.exercises[currentIdx];
+      let lastResult: string;
+      if (ex.type === "Статика") {
+        let done = selectedTime - timer;
+        if (!isStarted) done = selectedTime;
+        const min = Math.floor(done / 60);
+        const sec = (done % 60).toString().padStart(2, "0");
+        lastResult = `${min}:${sec}`;
+      } else {
+        lastResult = `${reps > 0 ? reps : ex.target}`;
+      }
       const today = new Date();
       const dateStr = today.toISOString().slice(0, 10);
-      const results: JournalExerciseResult[] = workout.exercises.map((ex: WorkoutExercise, idx: number) => {
+      const fullResults: JournalExerciseResult[] = workout.exercises.map((ex, idx) => {
         if (idx === currentIdx) {
-          if (ex.type === "Статика") {
-            let done = selectedTime - timer;
-            if (!isStarted) done = selectedTime;
-            const min = Math.floor(done / 60);
-            const sec = (done % 60).toString().padStart(2, "0");
-            return { name: ex.name, type: ex.type, result: `${min}:${sec}` };
-          } else {
-            return { name: ex.name, type: ex.type, result: `${reps > 0 ? reps : ex.target}` };  // 👈 оборачиваем в ``!
-          }
+          return { name: ex.name, type: ex.type, result: lastResult };
+        } else if (results[idx]) {
+          return results[idx];
         } else {
-          return { name: ex.name, type: ex.type, result: `${ex.target}` };  // 👈 тоже здесь!
+          return { name: ex.name, type: ex.type, result: `${ex.target}` };
         }
       });
-      ;
-      // Сохраняем результат тренировки в журнал через API
       fetch("http://localhost:8000/api/journal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ date: dateStr, workout: workout.name, exercises: results })
-      });
-    setIsFinished(true);
+        body: JSON.stringify({ date: dateStr, workout: workout.name, exercises: fullResults })
+      })
+        .then(() => setIsFinished(true))
+        .catch(error => {
+          console.error("Error saving journal entry:", error);
+        });
+    }
   }
+
   function handleNext() {
     if (intervalId) clearInterval(intervalId);
     setIsStarted(false);
+    saveCurrentResult();
     if (!isLast) setCurrentIdx(i => i + 1);
     else setIsFinished(true);
   }
 
-  // --- Динамика ---
+  // --- Dynamic Exercise Functions ---
   function handleStartDynamic() {
     setIsStarted(true);
   }
+
   function handleChangeReps(delta: number) {
     setReps(r => Math.max(0, r + delta));
   }
@@ -126,7 +182,7 @@ export default function WorkoutSessionPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white via-slate-100 to-cyan-50">
       <Card className="w-[90vw] max-w-3xl min-h-[500px] min-w-[320px] flex flex-col justify-between p-0 overflow-hidden">
-        {/* Верхняя часть */}
+        {/* Top Section */}
         <div className="flex items-center justify-between px-8 py-4 border-b bg-cyan-50">
           <div className="text-2xl font-bold text-cyan-700">{ex.name}</div>
           {ex.type === "Статика" && isStarted && (
@@ -135,15 +191,17 @@ export default function WorkoutSessionPage() {
             </div>
           )}
         </div>
-        {/* Центральная часть */}
+
+        {/* Center Section */}
         <div className="flex flex-1 items-center justify-between px-8 py-6 gap-8">
-          {/* Видео */}
+          {/* Video */}
           <div className="flex-1 flex items-center justify-center">
             <div className="aspect-square w-40 sm:w-56 bg-slate-200 rounded-xl overflow-hidden flex items-center justify-center">
               <video src={getVideoUrl(ex)} controls className="w-full h-full object-cover" />
             </div>
           </div>
-          {/* Итоговое значение */}
+
+          {/* Results */}
           <div className="flex-1 flex flex-col items-center justify-center gap-6">
             {ex.type === "Статика" ? (
               <div className="flex flex-col items-center gap-4 w-full">
@@ -166,9 +224,9 @@ export default function WorkoutSessionPage() {
             )}
           </div>
         </div>
-        {/* Нижняя часть */}
+
+        {/* Bottom Section */}
         <div className="flex items-center justify-between px-4 sm:px-8 py-6 sm:py-8 border-t bg-cyan-50 gap-2 sm:gap-6">
-          {/* Если последнее упражнение */}
           {isLast ? (
             <>
               {ex.type === "Статика" ? (

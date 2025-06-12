@@ -85,6 +85,70 @@ export default function EditWorkoutPage() {
       });
   }
   
+  function handleAddExerciseToWorkout(exercise: BaseExercise) {
+    // Преобразуем базовое упражнение в формат WorkoutExercise (добавьте нужные поля)
+    const workoutExercise = {
+      ...exercise,
+      sets: "",    // или другое значение по умолчанию
+      target: "",  // или другое значение по умолчанию
+    };
+
+    // Обновляем массив упражнений
+    const updatedExercises = [...exercises, workoutExercise];
+    setExercises(updatedExercises);
+
+    // Формируем обновлённую тренировку
+    const updatedWorkout = {
+      id: workoutId ? workoutId : Date.now(),
+      name: workoutName,
+      exercises: updatedExercises
+    };
+
+    // Сохраняем на бэке
+    fetch(`http://localhost:8000/api/workouts${isEdit ? `/${updatedWorkout.id}` : ""}`, {
+      method: isEdit ? "PUT" : "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedWorkout)
+    })
+      .then(res => res.json())
+      .then(data => {
+        // Обновляем локальное состояние тренировки, если нужно
+        setExercises(data.exercises);
+        setWorkoutName(data.name);
+      });
+
+    // Если есть модалка выбора — закрываем её
+    setChooseExerciseOpen && setChooseExerciseOpen(false);
+  }
+
+  function handleRemoveExercise(idx: number) {
+    if (!exercises) return;
+
+    // Удаляем упражнение по индексу
+    const updatedExercises = exercises.filter((_, i) => i !== idx);
+    setExercises(updatedExercises);
+
+    // Формируем обновлённую тренировку
+    const updatedWorkout = {
+      id: workoutId ? workoutId : Date.now(),
+      name: workoutName,
+      exercises: updatedExercises
+    };
+
+    // Сохраняем на бэке
+    fetch(`http://localhost:8000/api/workouts${isEdit ? `/${updatedWorkout.id}` : ""}`, {
+      method: isEdit ? "PUT" : "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedWorkout)
+    })
+      .then(res => res.json())
+      .then(data => {
+        // Обновляем локальное состояние тренировки, если нужно
+        setExercises(data.exercises);
+        setWorkoutName(data.name);
+      });
+  }
+
   function handleSave() {
     const wrk = {
       id: workoutId ? workoutId : Date.now(),
