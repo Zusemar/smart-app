@@ -21,6 +21,7 @@ class VoiceAssistant {
   private handlers: CommandHandler[] = [];
   private router?: AppRouterInstance;
   private messageCallbacks: MessageCallback[] = [];
+  private userId: string = '';
 
   private constructor() {
     const state = {};
@@ -62,6 +63,12 @@ class VoiceAssistant {
       // Handle built-in navigation commands
       if (command.action && this.router) {
         switch (command.action.type) {
+          case "userid":
+            if (command.action.parameters?.id) {
+              this.userId = command.action.parameters.id;
+              console.log("User ID set:", this.userId);
+            }
+            break;
           case "open_journal":
             this.router.push("/journal");
             this.notifyMessage("Открываю журнал тренировок");
@@ -81,9 +88,13 @@ class VoiceAssistant {
           case "stop_workout":
             this.notifyMessage("Тренировка остановлена.");
             break;
+          case "open_main_screen":
+            this.router.push("/");
+            this.notifyMessage("Перехожу на главный экран");
+            break;
           case "fallback":
             this.notifyMessage(
-              "Скажи, например, 'начни тренировку', 'покажи тренировки' или 'открой базу упражнений'."
+              "Скажи, например, 'начни тренировку', 'покажи тренировки', 'открой базу упражнений' или 'вернуться'."
             );
             break;
         }
@@ -136,6 +147,10 @@ class VoiceAssistant {
 
   public sendData(data: any) {
     this.assistant.sendData(data);
+  }
+
+  public getUserId(): string {
+    return this.userId;
   }
 }
 

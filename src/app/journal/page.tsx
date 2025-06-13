@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { BackButton } from "@/components/BackButton";
 import { useState, useEffect } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { getAssistant } from "@/lib/assistant";
 
 type JournalExerciseResult = {
   name: string;
@@ -18,12 +19,20 @@ type JournalEntry = {
 
 export default function JournalPage() {
   const [journal, setJournal] = useState<JournalEntry[]>([]);
+  const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/journal")
+    const assistant = getAssistant();
+    setUserId(assistant.getUserId());
+  }, []);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    fetch(`http://localhost:8000/api/journal/${userId}`)
       .then(res => res.json())
       .then(setJournal);
-  }, []);
+  }, [userId]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-slate-100 to-cyan-50 text-slate-900 flex flex-col items-center pt-20 pb-[72px]">

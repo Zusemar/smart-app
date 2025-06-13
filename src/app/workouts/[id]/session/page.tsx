@@ -1,3 +1,4 @@
+// TODO: если завершать голосом, то не сохраняется результат упражнений на время
 "use client";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -46,9 +47,17 @@ export default function WorkoutSessionPage() {
   const [selectedTime, setSelectedTime] = useState(0);
   const [results, setResults] = useState<JournalExerciseResult[]>([]);
   const [assistantMessage, setAssistantMessage] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/workouts/${workoutId}`)
+    const assistant = getAssistant();
+    setUserId(assistant.getUserId());
+  }, []);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    fetch(`http://localhost:8000/api/workouts/${userId}/${workoutId}`)
       .then(res => res.json())
       .then((workout: Workout) => {
         setWorkout(workout);
@@ -62,7 +71,7 @@ export default function WorkoutSessionPage() {
       .catch(error => {
         console.error("Error fetching workout:", error);
       });
-  }, [workoutId]);
+  }, [workoutId, userId]);
 
   useEffect(() => {
     if (!workout) return;
@@ -98,17 +107,8 @@ export default function WorkoutSessionPage() {
           console.log('Останавливаю упражнение');
           break;
         case "next_exercise":
-          setCurrentIdx(i => {
-            const nextIdx = i + 1;
-            if (nextIdx < workout.exercises.length) {
-              console.log('Переходим к следующему упражнению', nextIdx);
-              setAssistantMessage("Переходим к следующему упражнению");
-            } else {
-              console.log('Тренировка завершена');
-              setAssistantMessage("Тренировка завершена");
-            }
-            return nextIdx;
-          });
+          console.log('Переходим к следующему упражнению');
+          setAssistantMessage("Переходим к следующему упражнению");
           handleNext();
           break;
         case "prev_exercise":
@@ -134,6 +134,7 @@ export default function WorkoutSessionPage() {
           console.log('Повторяю упражнение сначала');
           break;
         case "finish_workout":
+          saveCurrentResult();
           handleFinish();
           setAssistantMessage("Завершаю тренировку");
           console.log('Завершаю тренировку');
@@ -186,6 +187,7 @@ export default function WorkoutSessionPage() {
         <Card className="p-10 text-center max-w-lg mx-auto">
           <h2 className="text-3xl font-bold mb-4 text-emerald-600">Тренировка завершена!</h2>
           <p className="mb-6 text-lg">Отличная работа! Так держать 💪</p>
+          <p className="mb-6 text-sm text-gray-600">Скажи "вернуться" чтобы вернуться на главный экран</p>
           <Button onClick={() => router.push("/")}>На главный экран</Button>
         </Card>
       </div>
@@ -213,8 +215,14 @@ export default function WorkoutSessionPage() {
     const ex = workout.exercises[currentIdx];
     let result: string;
     if (ex.type === "Статика") {
-      let done = selectedTime - timer;
-      if (!isStarted) done = selectedTime;
+      let done;
+      if (isStarted) {
+        // If exercise is in progress, calculate actual time done
+        done = selectedTime - timer;
+      } else {
+        // If exercise is not started or finished, use selected time
+        done = selectedTime;
+      }
       const min = Math.floor(done / 60);
       const sec = (done % 60).toString().padStart(2, "0");
       result = `${min}:${sec}`;
@@ -231,12 +239,16 @@ export default function WorkoutSessionPage() {
   function handleFinish() {
     if (intervalId) clearInterval(intervalId);
     setIsStarted(false);
-    if (workout) {
+    if (workout && userId) {
       const ex = workout.exercises[currentIdx];
       let lastResult: string;
       if (ex.type === "Статика") {
-        let done = selectedTime - timer;
-        if (!isStarted) done = selectedTime;
+        let done;
+        if (isStarted) {
+          done = selectedTime - timer;
+        } else {
+          done = selectedTime;
+        }
         const min = Math.floor(done / 60);
         const sec = (done % 60).toString().padStart(2, "0");
         lastResult = `${min}:${sec}`;
@@ -257,7 +269,12 @@ export default function WorkoutSessionPage() {
       fetch("http://localhost:8000/api/journal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ date: dateStr, workout: workout.name, exercises: fullResults })
+        body: JSON.stringify({ 
+          date: dateStr, 
+          workout: workout.name, 
+          exercises: fullResults,
+          user_id: userId 
+        })
       })
         .then(() => setIsFinished(true))
         .catch(error => {
@@ -297,7 +314,7 @@ export default function WorkoutSessionPage() {
         </div>
         {/* Assistant message */}
         {assistantMessage && (
-          <div className="mx-8 my-2 p-3 bg-white bg-opacity-80 rounded shadow text-black text-center">
+          <div className="mx-8 my-2 p-3 bg-white bg-opacity-80 rounded shadow text-slate-900 text-center">
             {assistantMessage}
           </div>
         )}

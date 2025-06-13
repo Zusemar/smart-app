@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { BackButton } from "@/components/BackButton";
+import { getAssistant } from "@/lib/assistant";
 
 type BaseExercise = {
   id: number;
@@ -25,21 +26,13 @@ type WorkoutExercise = {
   target: string;
 };
 
-const BASE_EXERCISES: BaseExercise[] = [
-  { id: 1, name: "Жим лёжа", type: "Динамика", description: "Жим лежа для груди" },
-  { id: 2, name: "Планка", type: "Статика", description: "Планка на время" },
-  { id: 3, name: "Приседания", type: "Динамика", description: "Базовое упражнение для ног" }
-];
-
-export default function EditWorkoutPage() {
+export default function NewWorkoutPage() {
   const router = useRouter();
-  const params = useParams();
-  const workoutId = params.id ? Number(params.id) : null;
-  const isEdit = !!workoutId;
+  const [userId, setUserId] = useState<string>("");
 
   const [workoutName, setWorkoutName] = useState("");
   const [exercises, setExercises] = useState<WorkoutExercise[]>([]);
-  const [baseExercises, setBaseExercises] = useState<BaseExercise[]>(BASE_EXERCISES);
+  const [baseExercises, setBaseExercises] = useState<BaseExercise[]>([]);
   const [chooseExerciseOpen, setChooseExerciseOpen] = useState(false);
   const [addNewExerciseOpen, setAddNewExerciseOpen] = useState(false);
   const [newExercise, setNewExercise] = useState<BaseExercise>({
@@ -53,32 +46,30 @@ export default function EditWorkoutPage() {
   const [target, setTarget] = useState("");
 
   useEffect(() => {
-    // Получаем базу упражнений с сервера
-    fetch("http://localhost:8000/api/exercises")
-      .then(res => res.json())
-      .then(setBaseExercises);
+    const assistant = getAssistant();
+    setUserId(assistant.getUserId());
   }, []);
 
   useEffect(() => {
-    if (isEdit) {
-      fetch(`http://localhost:8000/api/workouts/${workoutId}`)
-        .then(res => res.json())
-        .then(w => {
-          setWorkoutName(w.name);
-          setExercises(w.exercises);
-        });
-    }
-  }, [workoutId, isEdit]);
+    if (!userId) return;
+    // Получаем базу упражнений с сервера
+    fetch(`http://localhost:8000/api/exercises/${userId}`)
+      .then(res => res.json())
+      .then(setBaseExercises);
+  }, [userId]);
 
   function handleAddExerciseToWorkout(ex: BaseExercise) {
     setExercises([...exercises, { ...ex, sets, target }]);
     setChooseExerciseOpen(false); setSelectedExercise(null); setSets(""); setTarget("");
   }
+
   function handleAddNewExerciseToWorkoutAndBase() {
+    if (!userId) return;
+
     fetch("http://localhost:8000/api/exercises", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newExercise)
+      body: JSON.stringify({ ...newExercise, user_id: userId })
     })
       .then(res => res.json())
       .then(toAdd => {
@@ -87,34 +78,33 @@ export default function EditWorkoutPage() {
         setAddNewExerciseOpen(false); setChooseExerciseOpen(false); setNewExercise({ id: -1, name: "", description: "", type: "Динамика" }); setSets(""); setTarget("");
       });
   }
+
+  function handleRemoveExercise(idx: number) {
+    const updatedExercises = exercises.filter((_, i) => i !== idx);
+    setExercises(updatedExercises);
+  }
   
   function handleSave() {
+    if (!userId) return;
+
     const wrk = {
-      id: workoutId ? workoutId : Date.now(),
+      id: Date.now(),
       name: workoutName,
-      exercises
+      exercises,
+      user_id: userId
     };
-    fetch(`http://localhost:8000/api/workouts${isEdit ? `/${wrk.id}` : ""}`, {
-      method: isEdit ? "PUT" : "POST",
+    fetch("http://localhost:8000/api/workouts", {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(wrk)
     }).then(() => router.push("/workouts"));
-  }
-  
-  function handleDeleteWorkout() {
-    if (workoutId) {
-      fetch(`http://localhost:8000/api/workouts/${workoutId}`, { method: "DELETE" })
-        .then(() => router.push("/workouts"));
-    } else {
-      router.push("/workouts");
-    }
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-slate-100 to-cyan-50 text-slate-900 flex flex-col items-center pt-20 pb-[72px]">
       <Card className="p-8 w-full max-w-2xl bg-white border-cyan-200 shadow-md rounded-xl">
         <BackButton className="w-fit mb-6 bg-white border-cyan-300 text-cyan-700 shadow hover:bg-cyan-50 transition font-semibold px-6 py-2" />
-        <h2 className="text-2xl font-extrabold mb-8 text-cyan-700 drop-shadow-md">Редактирование тренировки</h2>
+        <h2 className="text-2xl font-extrabold mb-8 text-cyan-700 drop-shadow-md">Новая тренировка</h2>
         <div className="flex gap-4 items-center mb-8">
           <Input
             className="flex-1 bg-cyan-50 border-cyan-200 text-cyan-900"
@@ -124,7 +114,7 @@ export default function EditWorkoutPage() {
           />
           <Dialog open={chooseExerciseOpen} onOpenChange={setChooseExerciseOpen}>
             <DialogTrigger asChild>
-              <Button type="button" variant="outline" className="font-bold text-cyan-200 border-cyan-400 hover:bg-cyan-400/10 rounded-lg">добавить упражнение</Button>
+              <Button type="button" variant="outline" className="font-bold text-cyan-700 border-cyan-400 hover:bg-cyan-100 rounded-lg">добавить упражнение</Button>
             </DialogTrigger>
             <DialogContent className="bg-white border-cyan-200 max-w-lg w-full text-slate-900">
               <DialogHeader>
@@ -146,14 +136,14 @@ export default function EditWorkoutPage() {
               </div>
               <Button onClick={() => setAddNewExerciseOpen(true)} variant="secondary" className="mb-4 w-full bg-cyan-200 text-cyan-900 hover:bg-cyan-300 font-bold rounded-lg">+ Новое упражнение</Button>
               {selectedExercise && (
-                <div className="mt-2 border-t border-cyan-100 pt-2 space-y-1">
+                <div className="mt-2 border-t border-cyan-200 pt-2 space-y-1">
                   <div className="font-bold text-cyan-700 mb-2">{selectedExercise.name}</div>
                   <div className="flex gap-2 mb-2">
                     <Input
                       placeholder="Подходы"
                       value={sets}
                       onChange={e => setSets(e.target.value)}
-                      className="w-32 bg-white border-cyan-200 text-cyan-900"
+                      className="w-32 bg-cyan-50 border-cyan-200 text-cyan-900"
                       type="number"
                       min={1}
                     />
@@ -161,13 +151,13 @@ export default function EditWorkoutPage() {
                       placeholder="Повторы/сек"
                       value={target}
                       onChange={e => setTarget(e.target.value)}
-                      className="w-40 bg-white border-cyan-200 text-cyan-900"
+                      className="w-40 bg-cyan-50 border-cyan-200 text-cyan-900"
                     />
                   </div>
                   <Button
                     onClick={() => handleAddExerciseToWorkout(selectedExercise)}
                     variant="default"
-                    className="bg-gradient-to-r from-cyan-500 to-emerald-600 font-bold rounded-lg text-white"
+                    className="bg-gradient-to-r from-cyan-500 to-emerald-600 font-bold rounded-lg"
                   >
                     Добавить в тренировку
                   </Button>
@@ -245,13 +235,7 @@ export default function EditWorkoutPage() {
           ))}
         </div>
         {/* Кнопки управления */}
-        <div className="flex justify-between mt-12">
-          {isEdit && (
-            <Button variant="outline" className="text-red-400 border-red-400 hover:bg-red-400/10 rounded-lg" onClick={handleDeleteWorkout}>
-              Удалить тренировку
-            </Button>
-          )}
-          <div />
+        <div className="flex justify-end mt-12">
           <Button variant="default" className="bg-gradient-to-r from-cyan-500 to-emerald-600 font-bold rounded-lg shadow" onClick={handleSave}>
             Сохранить тренировку
           </Button>

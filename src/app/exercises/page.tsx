@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BackButton } from "@/components/BackButton";
+import { getAssistant } from "@/lib/assistant";
 
 type Exercise = {
   id: number;
@@ -17,19 +18,32 @@ export default function ExercisesPage() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [newName, setNewName] = useState("");
   const [newType, setNewType] = useState("Динамика");
+  const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/exercises")
-      .then(res => res.json())
-      .then(setExercises);
+    const assistant = getAssistant();
+    setUserId(assistant.getUserId());
   }, []);
 
+  useEffect(() => {
+    if (!userId) return;
+    
+    fetch(`http://localhost:8000/api/exercises/${userId}`)
+      .then(res => res.json())
+      .then(setExercises);
+  }, [userId]);
+
   const addExercise = async () => {
-    if (newName.trim()) {
+    if (newName.trim() && userId) {
       const res = await fetch("http://localhost:8000/api/exercises", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newName, type: newType, description: "" })
+        body: JSON.stringify({ 
+          name: newName, 
+          type: newType, 
+          description: "",
+          user_id: userId
+        })
       });
       if (res.ok) {
         const newEx = await res.json();

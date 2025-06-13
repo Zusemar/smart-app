@@ -16,14 +16,22 @@ export default function WorkoutsPage() {
   const router = useRouter();
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [assistantMessage, setAssistantMessage] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
+
+  useEffect(() => {
+    const assistant = getAssistant();
+    setUserId(assistant.getUserId());
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
 
     const initializeAssistant = async () => {
+      if (!userId) return;
+
       try {
         // Fetch workouts
-        const response = await fetch("http://localhost:8000/api/workouts");
+        const response = await fetch(`http://localhost:8000/api/workouts/${userId}`);
         const workoutsData = await response.json();
         
         if (!isMounted) return;
@@ -116,7 +124,7 @@ export default function WorkoutsPage() {
     return () => {
       isMounted = false;
     };
-  }, [router]);
+  }, [router, userId]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-slate-100 to-cyan-50 text-slate-900 flex flex-col items-center pt-12 pb-[72px]">

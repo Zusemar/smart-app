@@ -162,3 +162,41 @@ body {
 .animate-fadein {
   animation: fadein 0.5s cubic-bezier(0.4,0,0.2,1);
 }
+
+/* Assistant native panel styles */
+div#Bubble\.Bubble {
+  background: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+div#Bubble\.Bubble span {
+  color: #1F2937 !important;
+  font-weight: 500 !important;
+}
+
+.Bubble {
+    position: absolute !important;
+    top: -13px !important;
+    cursor: pointer !important;
+    transform: translateY(-100%) !important;
+    max-width: 80% !important;
+    border-radius: 24px 24px 24px 6px !important;
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    padding: 12px 24px !important;
+    font-size: 14px !important;
+    font-family: 'SB Sans Text' !important;
+    font-weight: 500 !important;
+    color: rgb(151, 151, 151) !important;
+    z-index: -1 !important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.SuggestsSuggest {
+  border-radius: 500px;
+  color: rgb(151, 151, 151) !important;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1;
+  font-family: 'SB Sans Text';
+  font-weight: 400;
+}
