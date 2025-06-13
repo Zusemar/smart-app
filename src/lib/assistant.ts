@@ -15,6 +15,11 @@ type CommandHandler = (command: AssistantCommand) => void;
 
 type MessageCallback = (message: string) => void;
 
+function sanitizeForApiPath(str: string) {
+  // Оставляем только буквы, цифры, дефис и подчёркивание
+  return str.replace(/[^a-zA-Z0-9-_]/g, '');
+}
+
 class VoiceAssistant {
   private static instance: VoiceAssistant;
   private assistant: any;
@@ -28,21 +33,21 @@ class VoiceAssistant {
     const recoveryState = {};
 
     const initialize = (getState: any, getRecoveryState: any) => {
-      // if (process.env.NODE_ENV === "development") {
-      //   return createSmartappDebugger({
-      //     token: process.env.NEXT_PUBLIC_ASSISTANT_TOKEN!,
-      //     initPhrase: process.env.NEXT_PUBLIC_ASSISTANT_INIT_PHRASE!,
-      //     getState,
-      //     getRecoveryState,
-      //     nativePanel: {
-      //       defaultText: "Помощь",
-      //       screenshotMode: false,
-      //       tabIndex: 0,
-      //     },
-      //   });
-      // }
+      if (process.env.NODE_ENV === "development") {
+        return createSmartappDebugger({
+          token: process.env.NEXT_PUBLIC_ASSISTANT_TOKEN!,
+          initPhrase: process.env.NEXT_PUBLIC_ASSISTANT_INIT_PHRASE!,
+          getState,
+          getRecoveryState,
+          nativePanel: {
+            defaultText: "Помощь",
+            screenshotMode: false,
+            tabIndex: 0,
+          },
+        });
+      }
 
-      return createAssistant({ getState, getRecoveryState });
+      // return createAssistant({ getState, getRecoveryState });
     };
 
     this.assistant = initialize(() => state, () => recoveryState);
@@ -65,7 +70,7 @@ class VoiceAssistant {
         switch (command.action.type) {
           case "userid":
             if (command.action.parameters?.id) {
-              this.userId = command.action.parameters.id;
+              this.userId = sanitizeForApiPath(command.action.parameters.id);
               console.log("User ID set:", this.userId);
             }
             break;
