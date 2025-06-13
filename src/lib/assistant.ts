@@ -35,7 +35,7 @@ class VoiceAssistant {
           getState,
           getRecoveryState,
           nativePanel: {
-            defaultText: "начать тренировку",
+            defaultText: "Помощь",
             screenshotMode: false,
             tabIndex: 0,
           },
