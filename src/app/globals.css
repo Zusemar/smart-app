@@ -200,3 +200,9 @@ div#Bubble\.Bubble span {
   font-family: 'SB Sans Text';
   font-weight: 400;
 }
+
+[data-next-badge] {
+  &[data-error='true'] {
+    display: none !important;
+  }
+}
