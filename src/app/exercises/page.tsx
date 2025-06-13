@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BackButton } from "@/components/BackButton";
-import { getAssistant } from "@/lib/assistant";
+import { getAssistant, getApiUrl } from "@/lib/assistant";
 
 type Exercise = {
   id: number;
@@ -28,14 +28,14 @@ export default function ExercisesPage() {
   useEffect(() => {
     if (!userId) return;
     
-    fetch(`http://localhost:8000/api/exercises/${userId}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/exercises/${userId}`)
       .then(res => res.json())
       .then(setExercises);
   }, [userId]);
 
   const addExercise = async () => {
     if (newName.trim() && userId) {
-      const res = await fetch("http://localhost:8000/api/exercises", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/exercises`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 

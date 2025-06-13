@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BackButton } from "@/components/BackButton";
-import { getAssistant } from "@/lib/assistant";
+import { getAssistant, getApiUrl } from "@/lib/assistant";
 
 type Workout = {
   id: number;
@@ -31,7 +31,7 @@ export default function WorkoutsPage() {
 
       try {
         // Fetch workouts
-        const response = await fetch(`http://localhost:8000/api/workouts/${userId}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/workouts/${userId}`);
         const workoutsData = await response.json();
         
         if (!isMounted) return;

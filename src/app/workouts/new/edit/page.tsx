@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { BackButton } from "@/components/BackButton";
-import { getAssistant } from "@/lib/assistant";
+import { getAssistant, getApiUrl } from "@/lib/assistant";
 
 type BaseExercise = {
   id: number;
@@ -53,7 +53,7 @@ export default function NewWorkoutPage() {
   useEffect(() => {
     if (!userId) return;
     // Получаем базу упражнений с сервера
-    fetch(`http://localhost:8000/api/exercises/${userId}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/exercises/${userId}`)
       .then(res => res.json())
       .then(setBaseExercises);
   }, [userId]);
@@ -66,7 +66,7 @@ export default function NewWorkoutPage() {
   function handleAddNewExerciseToWorkoutAndBase() {
     if (!userId) return;
 
-    fetch("http://localhost:8000/api/exercises", {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/exercises`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...newExercise, user_id: userId })
@@ -93,7 +93,7 @@ export default function NewWorkoutPage() {
       exercises,
       user_id: userId
     };
-    fetch("http://localhost:8000/api/workouts", {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/workouts`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(wrk)

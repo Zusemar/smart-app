@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { BackButton } from "@/components/BackButton";
 import { useState, useEffect } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { getAssistant } from "@/lib/assistant";
+import { getAssistant, getApiUrl } from "@/lib/assistant";
 
 type JournalExerciseResult = {
   name: string;
@@ -29,7 +29,7 @@ export default function JournalPage() {
   useEffect(() => {
     if (!userId) return;
 
-    fetch(`http://localhost:8000/api/journal/${userId}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/journal/${userId}`)
       .then(res => res.json())
       .then(setJournal);
   }, [userId]);

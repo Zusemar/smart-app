@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { getAssistant } from "@/lib/assistant";
+import { getAssistant, getApiUrl } from "@/lib/assistant";
 
 // Types
 interface WorkoutExercise {
@@ -27,8 +27,8 @@ interface JournalExerciseResult {
 }
 
 function getVideoUrl(ex: WorkoutExercise) {
-  // Placeholder: in a real project this would be a video link
-  return "https://www.w3schools.com/html/mov_bbb.mp4";
+  // Теперь возвращаем иконку DomFit вместо видео
+  return "/domfit.jpg";
 }
 
 export default function WorkoutSessionPage() {
@@ -57,7 +57,7 @@ export default function WorkoutSessionPage() {
   useEffect(() => {
     if (!userId) return;
 
-    fetch(`http://localhost:8000/api/workouts/${userId}/${workoutId}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/workouts/${userId}/${workoutId}`)
       .then(res => res.json())
       .then((workout: Workout) => {
         setWorkout(workout);
@@ -266,7 +266,7 @@ export default function WorkoutSessionPage() {
           return { name: ex.name, type: ex.type, result: `${ex.target}` };
         }
       });
-      fetch("http://localhost:8000/api/journal", {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/journal`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
@@ -324,7 +324,7 @@ export default function WorkoutSessionPage() {
           {/* Video */}
           <div className="flex-1 flex items-center justify-center">
             <div className="aspect-square w-40 sm:w-56 bg-slate-200 rounded-xl overflow-hidden flex items-center justify-center">
-              <video src={getVideoUrl(ex)} controls className="w-full h-full object-cover" />
+              <img src={getVideoUrl(ex)} alt="DomFit Icon" className="w-full h-full object-cover" />
             </div>
           </div>
 

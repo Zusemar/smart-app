@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { BackButton } from "@/components/BackButton";
-import { getAssistant } from "@/lib/assistant";
+import { getAssistant, getApiUrl } from "@/lib/assistant";
 
 type BaseExercise = {
   id: number;
@@ -62,14 +62,14 @@ export default function EditWorkoutPage() {
   useEffect(() => {
     if (!userId) return;
     // Получаем базу упражнений с сервера
-    fetch(`http://localhost:8000/api/exercises/${userId}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/exercises/${userId}`)
       .then(res => res.json())
       .then(setBaseExercises);
   }, [userId]);
 
   useEffect(() => {
     if (isEdit && userId) {
-      fetch(`http://localhost:8000/api/workouts/${userId}/${workoutId}`)
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/workouts/${userId}/${workoutId}`)
         .then(res => res.json())
         .then(w => {
           setWorkoutName(w.name);
@@ -86,7 +86,7 @@ export default function EditWorkoutPage() {
   function handleAddNewExerciseToWorkoutAndBase() {
     if (!userId) return;
 
-    fetch("http://localhost:8000/api/exercises", {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/exercises`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...newExercise, user_id: userId })
@@ -113,7 +113,7 @@ export default function EditWorkoutPage() {
       exercises,
       user_id: userId
     };
-    fetch(`http://localhost:8000/api/workouts${isEdit ? `/${userId}/${wrk.id}` : ""}`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/workouts${isEdit ? `/${userId}/${wrk.id}` : ""}`, {
       method: isEdit ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(wrk)
@@ -122,7 +122,7 @@ export default function EditWorkoutPage() {
   
   function handleDeleteWorkout() {
     if (workoutId && userId) {
-      fetch(`http://localhost:8000/api/workouts/${userId}/${workoutId}`, { method: "DELETE" })
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/workouts/${userId}/${workoutId}`, { method: "DELETE" })
         .then(() => router.push("/workouts"));
     } else {
       router.push("/workouts");
