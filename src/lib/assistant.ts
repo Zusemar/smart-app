@@ -21,7 +21,7 @@ class VoiceAssistant {
   private handlers: CommandHandler[] = [];
   private router?: AppRouterInstance;
   private messageCallbacks: MessageCallback[] = [];
-  private userId: string = '';
+  private userId: string = '1';
 
   private constructor() {
     const state = {};
