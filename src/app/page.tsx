@@ -17,9 +17,13 @@ export default function Home() {
       { id: 2, name: "Ноги" },
       // ...
     ];
+    
     console.log('sendData');
     getAssistant().sendData({
-      intent: "/test_intent"
+      action: {
+        action_id: "test",
+        parameters: { workouts }
+      }
     });
 
     getAssistant().setRouter(router);

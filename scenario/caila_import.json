@@ -1,7 +1,7 @@
 {
   "project" : {
-    "id" : "smart_app-6736029-Bsj",
-    "name" : "smart_app-6736029-Bsj",
+    "id" : "testovye_trenirovki-6736029-BqO",
+    "name" : "testovye_trenirovki-6736029-BqO",
     "folder" : "/jaicp"
   },
   "settings" : {
@@ -14,7 +14,7 @@
     "business" : false
   },
   "intents" : [ {
-    "id" : 925082,
+    "id" : 920244,
     "path" : "/тренировка",
     "enabled" : true,
     "businessShared" : false,
@@ -32,7 +32,7 @@
   } ],
   "entities" : [ {
     "entity" : {
-      "id" : 724084,
+      "id" : 724085,
       "name" : "Workout",
       "enabled" : true,
       "type" : "annotation",
@@ -45,17 +45,17 @@
       "subject" : "название тренировки"
     },
     "records" : [ {
-      "id" : 26401467,
+      "id" : 26395596,
       "type" : "synonyms",
       "rule" : [ "грудь" ],
       "value" : ""
     }, {
-      "id" : 26401468,
+      "id" : 26395597,
       "type" : "synonyms",
       "rule" : [ "ноги" ],
       "value" : ""
     }, {
-      "id" : 26391147,
+      "id" : 26395598,
       "type" : "synonyms",
       "rule" : [ "спина" ],
       "value" : ""

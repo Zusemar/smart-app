@@ -66,3 +66,7 @@ function openWorkouts(context) {
 function openExercises(context) {
     addAction({ type: "open_exercises" }, context);
 }
+
+function openMainscreen(context) {
+    addAction({ type: "open_mainscreen" }, context);
+}
