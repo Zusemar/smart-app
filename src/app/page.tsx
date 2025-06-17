@@ -44,19 +44,20 @@ export default function Home() {
       <div className="w-full max-w-2xl grid grid-cols-1 sm:grid-cols-2 gap-10 mb-20">
         <button
           onClick={() => router.push("/journal")}
-          className="rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-xl hover:scale-105 transition text-white text-3xl sm:text-4xl font-bold py-10 px-6 w-full border-4 border-black"
+          className="rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-xl hover:scale-105 transition text-white text-3xl sm:text-4xl font-bold py-10 px-6 w-full border-2 border-black"
         >
           Журнал
         </button>
         <button
           onClick={() => router.push("/workouts")}
-          className="rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-xl hover:scale-105 transition text-white text-3xl sm:text-4xl font-bold py-10 px-6 w-full border-4 border-black"
+          className="rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-xl hover:scale-105 transition text-white text-3xl sm:text-4xl font-bold py-10 px-6 w-full border-2 border-black"
         >
           Мои тренировки
         </button>
       </div>
       <GlowCard
-        className="cursor-pointer mb-20 w-56 h-56 sm:w-64 sm:h-64 text-3xl sm:text-4xl text-white font-bold border-4 border-black"
+        className="cursor-pointer mb-20 w-56 h-56 sm:w-64 sm:h-64 text-3xl sm:text-4xl text-white font-bold border-2 border-black focus-visible:border-accent focus-visible:border-[5px] focus-visible:shadow-[0_0_0_6px_var(--color-accent,#00e0e0),0_2px_16px_0_rgba(6,182,212,0.15)] active:border-accent active:border-[5px] active:shadow-[0_0_0_6px_var(--color-accent,#00e0e0),0_2px_16px_0_rgba(6,182,212,0.15)]"
+        tabIndex={0}
         onClick={() => router.push("/workouts")}
       >
         начать тренировку
@@ -68,7 +69,7 @@ export default function Home() {
       )}
       <div className="w-full max-w-xs">
         <button
-          className="rounded-2xl bg-[#1aa3a0] shadow-xl hover:scale-105 transition text-white text-3xl sm:text-4xl font-bold py-10 px-6 w-full border-4 border-black mt-6"
+          className="rounded-2xl bg-[#1aa3a0] shadow-xl hover:scale-105 transition text-white text-3xl sm:text-4xl font-bold py-10 px-6 w-full border-2 border-black mt-6"
           onClick={() => router.push("/exercises")}
         >
           База упражнений
