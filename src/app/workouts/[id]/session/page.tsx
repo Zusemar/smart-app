@@ -306,50 +306,76 @@ export default function WorkoutSessionPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white via-slate-100 to-cyan-50 pb-[72px]">
-      <Card className="w-[90vw] max-w-3xl min-h-[500px] min-w-[320px] flex flex-col justify-between p-0 overflow-hidden">
+      <Card className="w-[90vw] max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl min-h-[500px] min-w-[320px] flex flex-col justify-between p-0 overflow-hidden">
         {/* Top Section */}
-        <div className="flex items-center justify-between px-8 py-4 border-b bg-cyan-50">
-          <div className="text-2xl font-bold text-cyan-700">{ex.name}</div>
+        <div className="flex items-center justify-between px-8 py-4 lg:py-6 xl:py-8 border-b bg-cyan-50">
+          <div className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-bold text-cyan-700">{ex.name}</div>
           {ex.type === "Статика" && isStarted && (
             <div className="flex items-center gap-2">
-              <span className="text-xl font-mono">{Math.floor(timer/60)}:{(timer%60).toString().padStart(2,"0")}</span>
+              <span className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-mono">{Math.floor(timer/60)}:{(timer%60).toString().padStart(2,"0")}</span>
             </div>
           )}
         </div>
         {/* Assistant message */}
         {assistantMessage && (
-          <div className="mx-8 my-2 p-3 bg-white bg-opacity-80 rounded shadow text-slate-900 text-center">
+          <div className="mx-8 my-2 p-3 lg:p-4 xl:p-5 bg-white bg-opacity-80 rounded shadow text-slate-900 text-center text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
             {assistantMessage}
           </div>
         )}
 
         {/* Center Section */}
-        <div className="flex flex-1 items-center justify-between px-8 py-6 gap-8">
+        <div className="flex flex-1 items-center justify-between px-8 py-6 lg:py-8 xl:py-10 gap-8">
           {/* Video */}
           <div className="flex-1 flex items-center justify-center">
-            <div className="aspect-square w-40 sm:w-56 bg-slate-200 rounded-xl overflow-hidden flex items-center justify-center">
+            <div className="aspect-square w-40 sm:w-56 lg:w-64 xl:w-72 2xl:w-80 bg-slate-200 rounded-xl overflow-hidden flex items-center justify-center">
               <img src={getVideoUrl(ex)} alt="DomFit Icon" className="w-full h-full object-cover" />
             </div>
           </div>
 
           {/* Results */}
-          <div className="flex-1 flex flex-col items-center justify-center gap-6">
+          <div className="flex-1 flex flex-col items-center justify-center gap-6 lg:gap-8">
             {ex.type === "Статика" ? (
-              <div className="flex flex-col items-center gap-4 w-full">
-                <div className="text-3xl font-bold text-cyan-700 text-center w-full">Итоговое время</div>
-                <div className="flex items-center gap-3 justify-center w-full">
-                  <Button variant="outline" onClick={() => handleChangeTime(-10)} disabled={isStarted}>-10 сек</Button>
-                  <span className="text-4xl font-mono">{Math.floor(selectedTime/60)}:{(selectedTime%60).toString().padStart(2,"0")}</span>
-                  <Button variant="outline" onClick={() => handleChangeTime(10)} disabled={isStarted}>+10 сек</Button>
+              <div className="flex flex-col items-center gap-4 lg:gap-6 w-full">
+                <div className="text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-cyan-700 text-center w-full">Итоговое время</div>
+                <div className="flex items-center gap-3 lg:gap-4 justify-center w-full">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => handleChangeTime(-10)} 
+                    disabled={isStarted}
+                    className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl py-3 lg:py-4 xl:py-6 2xl:py-8 px-6 lg:px-8 xl:px-10 2xl:px-12 hover:scale-[1.02] hover:-translate-y-0.5 transition-all min-w-[120px] lg:min-w-[160px] xl:min-w-[200px] 2xl:min-w-[240px]"
+                  >
+                    -10 сек
+                  </Button>
+                  <span className="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-mono">{Math.floor(selectedTime/60)}:{(selectedTime%60).toString().padStart(2,"0")}</span>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => handleChangeTime(10)} 
+                    disabled={isStarted}
+                    className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl py-3 lg:py-4 xl:py-6 2xl:py-8 px-6 lg:px-8 xl:px-10 2xl:px-12 hover:scale-[1.02] hover:-translate-y-0.5 transition-all min-w-[120px] lg:min-w-[160px] xl:min-w-[200px] 2xl:min-w-[240px]"
+                  >
+                    +10 сек
+                  </Button>
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center gap-4">
-                <div className="text-3xl font-bold text-cyan-700">Повторения</div>
-                <div className="flex items-center gap-3">
-                  <Button variant="outline" onClick={() => handleChangeReps(-1)}>-1</Button>
-                  <span className="text-4xl font-mono">{reps}</span>
-                  <Button variant="outline" onClick={() => handleChangeReps(1)}>+1</Button>
+              <div className="flex flex-col items-center gap-4 lg:gap-6">
+                <div className="text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-cyan-700">Повторения</div>
+                <div className="flex items-center gap-3 lg:gap-4">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => handleChangeReps(-1)}
+                    className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl py-3 lg:py-4 xl:py-6 2xl:py-8 px-6 lg:px-8 xl:px-10 2xl:px-12 hover:scale-[1.02] hover:-translate-y-0.5 transition-all min-w-[120px] lg:min-w-[160px] xl:min-w-[200px] 2xl:min-w-[240px]"
+                  >
+                    -1
+                  </Button>
+                  <span className="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-mono">{reps}</span>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => handleChangeReps(1)}
+                    className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl py-3 lg:py-4 xl:py-6 2xl:py-8 px-6 lg:px-8 xl:px-10 2xl:px-12 hover:scale-[1.02] hover:-translate-y-0.5 transition-all min-w-[120px] lg:min-w-[160px] xl:min-w-[200px] 2xl:min-w-[240px]"
+                  >
+                    +1
+                  </Button>
                 </div>
               </div>
             )}
@@ -357,20 +383,48 @@ export default function WorkoutSessionPage() {
         </div>
 
         {/* Bottom Section */}
-        <div className="flex items-center justify-between px-4 sm:px-8 py-6 sm:py-8 border-t bg-cyan-50 gap-2 sm:gap-6">
+        <div className="flex items-center justify-between px-4 sm:px-8 py-6 sm:py-8 lg:py-10 xl:py-12 border-t bg-cyan-50 gap-4 sm:gap-8">
           {isLast ? (
             <>
               {ex.type === "Статика" ? (
-                <Button size="lg" onClick={handleStartStatic} className="font-bold min-w-[140px] sm:min-w-[200px] text-base sm:text-lg py-3 sm:py-4" disabled={isStarted}>Начать упражнение</Button>
+                <Button 
+                  size="lg" 
+                  onClick={handleStartStatic} 
+                  className="font-bold min-w-[140px] sm:min-w-[180px] lg:min-w-[220px] xl:min-w-[260px] text-lg sm:text-xl lg:text-2xl xl:text-3xl py-3 sm:py-4 lg:py-5 xl:py-6 px-4 sm:px-6 lg:px-8 xl:px-10 hover:scale-[1.02] hover:-translate-y-0.5 transition-all" 
+                  disabled={isStarted}
+                >
+                  Начать упражнение
+                </Button>
               ) : <div />}
-              <Button variant="outline" size="lg" onClick={handleFinish} className="text-red-500 border-red-300 min-w-[120px] sm:min-w-[160px] text-base sm:text-lg py-3 sm:py-4">Закончить тренировку</Button>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                onClick={handleFinish} 
+                className="text-red-500 border-red-300 min-w-[140px] sm:min-w-[200px] lg:min-w-[240px] xl:min-w-[280px] 2xl:min-w-[320px] text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl py-4 sm:py-5 lg:py-6 xl:py-8 2xl:py-10 px-6 sm:px-8 lg:px-10 xl:px-12 2xl:px-14 hover:scale-[1.02] hover:-translate-y-0.5 transition-all"
+              >
+                Закончить тренировку
+              </Button>
             </>
           ) : (
             <>
               {ex.type === "Статика" ? (
-                <Button size="lg" onClick={handleStartStatic} className="font-bold min-w-[140px] sm:min-w-[200px] text-base sm:text-lg py-3 sm:py-4" disabled={isStarted}>Начать упражнение</Button>
+                <Button 
+                  size="lg" 
+                  onClick={handleStartStatic} 
+                  className="font-bold min-w-[140px] sm:min-w-[180px] lg:min-w-[220px] xl:min-w-[260px] text-lg sm:text-xl lg:text-2xl xl:text-3xl py-3 sm:py-4 lg:py-5 xl:py-6 px-4 sm:px-6 lg:px-8 xl:px-10 hover:scale-[1.02] hover:-translate-y-0.5 transition-all" 
+                  disabled={isStarted}
+                >
+                  Начать упражнение
+                </Button>
               ) : <div />}
-              <Button variant="outline" size="lg" onClick={handleNext} className="min-w-[120px] sm:min-w-[160px] text-base sm:text-lg py-3 sm:py-4">Следующее упражнение</Button>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                onClick={handleNext} 
+                className="min-w-[140px] sm:min-w-[180px] lg:min-w-[220px] xl:min-w-[260px] text-lg sm:text-xl lg:text-2xl xl:text-3xl py-3 sm:py-4 lg:py-5 xl:py-6 px-4 sm:px-6 lg:px-8 xl:px-10 hover:scale-[1.02] hover:-translate-y-0.5 transition-all"
+              >
+                Следующее упражнение
+              </Button>
             </>
           )}
         </div>

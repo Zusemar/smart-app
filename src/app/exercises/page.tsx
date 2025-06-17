@@ -56,39 +56,44 @@ export default function ExercisesPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 text-slate-900 flex flex-col items-center pt-24 pb-[80px]">
-      <div className="w-full max-w-md">
-        <BackButton className="w-fit mb-8 bg-white border-black text-cyan-800 shadow-lg hover:bg-cyan-100 transition font-semibold px-8 py-3 h-14 text-xl" />
-        <h1 className="text-6xl font-extrabold mb-12 text-cyan-800 drop-shadow-md">База упражнений</h1>
+      <div className="w-full max-w-md lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl px-4">
+        <BackButton className="w-fit mb-8 bg-white border-black text-cyan-800 shadow-lg hover:bg-cyan-100 hover:scale-[1.02] hover:-translate-y-0.5 transition-all font-semibold px-8 py-3 h-12 sm:h-14 lg:h-16 text-lg sm:text-xl lg:text-2xl xl:text-3xl" />
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-extrabold mb-12 text-cyan-800 drop-shadow-md">База упражнений</h1>
       </div>
-      <div className="flex flex-col w-full max-w-md gap-6">
+      <div className="flex flex-col w-full max-w-md lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl px-4 gap-6">
         {exercises.map(e =>
-          <Card key={e.id} className="bg-white border-black text-cyan-900 shadow-lg">
-            <div className="p-7 flex justify-between items-center">
-              <span className="text-xl">{e.name}</span>
-              <span className="text-xl text-cyan-600 font-semibold">{e.type}</span>
+          <Card key={e.id} className="bg-white border-black text-cyan-900 shadow-lg hover:scale-[1.01] hover:-translate-y-0.5 transition-all">
+            <div className="p-5 sm:p-7 lg:p-8 flex justify-between items-center">
+              <span className="text-lg sm:text-xl lg:text-2xl xl:text-3xl">{e.name}</span>
+              <span className="text-lg sm:text-xl lg:text-2xl xl:text-3xl text-cyan-600 font-semibold">{e.type}</span>
             </div>
           </Card>
         )}
       </div>
-      <Card className="p-10 mt-14 w-full max-w-lg bg-white border-black shadow-lg">
-        <Label htmlFor="add-ex" className="block mb-3 text-cyan-900 font-bold !text-xl">Новое упражнение</Label>
+      <Card className="p-6 sm:p-8 lg:p-10 mt-14 w-full max-w-lg lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl mx-4 bg-white border-black shadow-lg">
+        <Label htmlFor="add-ex" className="block mb-3 text-cyan-900 font-bold text-xl sm:text-2xl lg:text-3xl xl:text-4xl">Новое упражнение</Label>
         <div className="grid grid-cols-12 gap-3 mb-3">
           <Input
             id="add-ex"
-            className="col-span-5 text-lg text-cyan-900 border border-black !h-14 px-4"
+            className="col-span-5 text-base sm:text-lg lg:text-xl xl:text-2xl text-cyan-900 border border-black h-12 sm:h-14 lg:h-16 px-4"
             placeholder="Название"
             value={newName}
             onChange={e => setNewName(e.target.value)}
           />
           <select
-            className="col-span-4 rounded-md border border-black text-cyan-900 text-base h-14 px-2 bg-cyan-100"
+            className="col-span-4 rounded-md border border-black text-cyan-900 text-base sm:text-lg lg:text-xl xl:text-2xl h-12 sm:h-14 lg:h-16 px-2 bg-cyan-100"
             value={newType}
             onChange={e => setNewType(e.target.value)}
           >
             <option value="Динамика">Динамика</option>
             <option value="Статика">Статика</option>
           </select>
-          <Button onClick={addExercise} className="col-span-3 border-black text-base h-14 ">Добавить</Button>
+          <Button 
+            onClick={addExercise} 
+            className="col-span-3 border-black text-base sm:text-lg lg:text-xl xl:text-2xl h-12 sm:h-14 lg:h-16 hover:scale-[1.02] hover:-translate-y-0.5 transition-all"
+          >
+            Добавить
+          </Button>
         </div>
       </Card>
     </div>

@@ -21,10 +21,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
         {/* Контейнер для страниц */}
         <main className="relative flex flex-col min-h-screen items-center justify-start px-4 py-10 sm:px-8">
-          <div className="w-full max-w-4xl">
+          <div className="w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
             {/* Тут можно вставить навбар/лого если надо */}
             <header className="mb-12 flex justify-center">
-              <span className="text-3xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-400 drop-shadow">Трекер тренировок</span>
+              <span className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-400 drop-shadow">Трекер тренировок</span>
             </header>
             {children}
           </div>
