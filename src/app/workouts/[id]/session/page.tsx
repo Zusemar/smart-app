@@ -179,16 +179,20 @@ export default function WorkoutSessionPage() {
 
   // --- Только после всех хуков идут любые return! ---
   if (!workout) {
-    return <div className="flex items-center justify-center min-h-screen">Тренировка не найдена</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <span className="text-3xl">Тренировка не найдена</span>
+      </div>
+    );
   }
   if (isFinished) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen gap-8">
-        <Card className="p-10 text-center max-w-lg mx-auto">
-          <h2 className="text-3xl font-bold mb-4 text-emerald-600">Тренировка завершена!</h2>
-          <p className="mb-6 text-lg">Отличная работа! Так держать 💪</p>
-          <p className="mb-6 text-sm text-gray-600">Скажи "вернуться" чтобы вернуться на главный экран</p>
-          <Button onClick={() => router.push("/")}>На главный экран</Button>
+      <div className="flex flex-col items-center justify-center min-h-screen gap-10 bg-gray-100">
+        <Card className="p-12 text-center max-w-lg mx-auto border-black">
+          <h2 className="text-6xl font-bold mb-6 text-emerald-700">Тренировка завершена!</h2>
+          <p className="mb-8 text-3xl">Отличная работа! Так держать 💪</p>
+          <p className="mb-8 text-2xl text-gray-700">Скажи "вернуться" чтобы вернуться на главный экран</p>
+          <Button onClick={() => router.push("/")} className="bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold py-4 px-8 rounded-lg shadow-lg hover:scale-105 transition border-black text-2xl">На главный экран</Button>
         </Card>
       </div>
     );

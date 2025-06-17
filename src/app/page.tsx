@@ -40,35 +40,35 @@ export default function Home() {
   }, [router]);
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-transparent px-2 sm:px-4 py-8 pb-[72px]">
-      <div className="w-full max-w-2xl grid grid-cols-1 sm:grid-cols-2 gap-8 mb-16">
+    <main className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-4 sm:px-6 py-10 pb-[80px]">
+      <div className="w-full max-w-2xl grid grid-cols-1 sm:grid-cols-2 gap-10 mb-20">
         <button
           onClick={() => router.push("/journal")}
-          className="rounded-2xl bg-gradient-to-br from-blue-400 to-cyan-500 shadow-lg hover:scale-105 transition text-white text-lg sm:text-xl font-bold py-8 px-4 w-full border-4 border-blue-200"
+          className="rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-xl hover:scale-105 transition text-white text-3xl sm:text-4xl font-bold py-10 px-6 w-full border-4 border-black"
         >
           Журнал
         </button>
         <button
           onClick={() => router.push("/workouts")}
-          className="rounded-2xl bg-gradient-to-br from-green-400 to-emerald-500 shadow-lg hover:scale-105 transition text-white text-lg sm:text-xl font-bold py-8 px-4 w-full border-4 border-green-200"
+          className="rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-xl hover:scale-105 transition text-white text-3xl sm:text-4xl font-bold py-10 px-6 w-full border-4 border-black"
         >
           Мои тренировки
         </button>
       </div>
       <GlowCard
-        className="cursor-pointer mb-16 w-44 h-44 sm:w-56 sm:h-56 text-xl sm:text-2xl font-bold"
+        className="cursor-pointer mb-20 w-56 h-56 sm:w-64 sm:h-64 text-3xl sm:text-4xl text-white font-bold border-4 border-black"
         onClick={() => router.push("/workouts")}
       >
-        начать<br />тренировку
+        начать тренировку
       </GlowCard>
       {message && (
-        <div className="mb-4 p-4 bg-white bg-opacity-80 rounded shadow text-black max-w-xl text-center">
+        <div className="mb-6 p-6 bg-white bg-opacity-90 rounded shadow-lg text-black max-w-xl text-center text-2xl">
           {message}
         </div>
       )}
       <div className="w-full max-w-xs">
         <button
-          className="rounded-2xl bg-[#27dbce] shadow-lg hover:scale-105 transition text-white text-lg sm:text-xl font-bold py-8 px-4 w-full border-4 border-[#acd4b4] mt-4"
+          className="rounded-2xl bg-[#1aa3a0] shadow-xl hover:scale-105 transition text-white text-3xl sm:text-4xl font-bold py-10 px-6 w-full border-4 border-black mt-6"
           onClick={() => router.push("/exercises")}
         >
           База упражнений

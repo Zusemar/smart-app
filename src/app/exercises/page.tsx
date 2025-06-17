@@ -55,40 +55,40 @@ export default function ExercisesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-slate-100 to-cyan-50 text-slate-900 flex flex-col items-center pt-20 pb-[72px]">
+    <div className="min-h-screen bg-gray-100 text-slate-900 flex flex-col items-center pt-24 pb-[80px]">
       <div className="w-full max-w-md">
-        <BackButton className="w-fit mb-6 bg-white border-cyan-300 text-cyan-700 shadow hover:bg-cyan-50 transition font-semibold px-6 py-2" />
-        <h1 className="text-3xl font-extrabold mb-10 text-cyan-700 drop-shadow-md">База упражнений</h1>
+        <BackButton className="w-fit mb-8 bg-white border-black text-cyan-800 shadow-lg hover:bg-cyan-100 transition font-semibold px-8 py-3 h-14 text-xl" />
+        <h1 className="text-6xl font-extrabold mb-12 text-cyan-800 drop-shadow-md">База упражнений</h1>
       </div>
-      <div className="flex flex-col w-full max-w-md gap-4">
+      <div className="flex flex-col w-full max-w-md gap-6">
         {exercises.map(e =>
-          <Card key={e.id} className="bg-white border-cyan-200 text-cyan-900 shadow-md">
-            <div className="p-6 flex justify-between items-center">
-              <span>{e.name}</span>
-              <span className="text-xs text-cyan-500 font-semibold">{e.type}</span>
+          <Card key={e.id} className="bg-white border-black text-cyan-900 shadow-lg">
+            <div className="p-7 flex justify-between items-center">
+              <span className="text-xl">{e.name}</span>
+              <span className="text-xl text-cyan-600 font-semibold">{e.type}</span>
             </div>
           </Card>
         )}
       </div>
-      <Card className="p-6 mt-12 w-full max-w-md bg-white border-cyan-200 shadow-md">
-        <Label htmlFor="add-ex" className="block mb-2 text-cyan-700 font-bold">Новое упражнение</Label>
-        <div className="flex gap-2 mb-2">
+      <Card className="p-10 mt-14 w-full max-w-lg bg-white border-black shadow-lg">
+        <Label htmlFor="add-ex" className="block mb-3 text-cyan-900 font-bold !text-xl">Новое упражнение</Label>
+        <div className="grid grid-cols-12 gap-3 mb-3">
           <Input
             id="add-ex"
-            className="flex-1"
+            className="col-span-5 text-lg text-cyan-900 border border-black !h-14 px-4"
             placeholder="Название"
             value={newName}
             onChange={e => setNewName(e.target.value)}
           />
           <select
-            className="rounded-md px-3 py-2 bg-cyan-50 border border-cyan-200 text-cyan-900"
+            className="col-span-4 rounded-md border border-black text-cyan-900 text-base h-14 px-2 bg-cyan-100"
             value={newType}
             onChange={e => setNewType(e.target.value)}
           >
             <option value="Динамика">Динамика</option>
             <option value="Статика">Статика</option>
           </select>
-          <Button onClick={addExercise}>Добавить</Button>
+          <Button onClick={addExercise} className="col-span-3 border-black text-base h-14 ">Добавить</Button>
         </div>
       </Card>
     </div>

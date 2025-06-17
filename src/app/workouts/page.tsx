@@ -127,40 +127,40 @@ export default function WorkoutsPage() {
   }, [router, userId]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-slate-100 to-cyan-50 text-slate-900 flex flex-col items-center pt-12 pb-[72px]">
+    <div className="min-h-screen bg-gray-100 text-slate-900 flex flex-col items-center pt-16 pb-[80px]">
       <div className="w-full max-w-xl">
-        <BackButton className="w-fit mb-6 bg-white border-cyan-300 text-cyan-700 shadow hover:bg-cyan-50 transition font-semibold px-6 py-2" />
+        <BackButton className="w-fit mb-8 bg-white border-black text-cyan-800 shadow-lg hover:bg-cyan-100 transition font-semibold px-8 py-3 text-2xl" />
 
-        <h1 className="text-3xl font-extrabold mb-10 text-cyan-700 drop-shadow-md">Мои тренировки</h1>
+        <h1 className="text-6xl font-extrabold mb-12 text-cyan-800 drop-shadow-md">Мои тренировки</h1>
         
         {assistantMessage && (
-          <Card className="mb-6 p-4 bg-cyan-50 border-cyan-200 text-cyan-700">
+          <Card className="mb-8 p-5 bg-cyan-100 border-black text-cyan-800 text-3xl">
             {assistantMessage}
           </Card>
         )}
 
-        <div className="flex flex-col gap-5 w-full">
+        <div className="flex flex-col gap-6 w-full">
           {workouts.length === 0 && (
-            <Card className="p-5 bg-white border-cyan-200 text-cyan-700 text-center text-lg shadow-md">
+            <Card className="p-6 bg-white border-black text-cyan-800 text-center text-3xl shadow-lg">
               Пока не создано ни одной тренировки
             </Card>
           )}
           {workouts.map(w =>
-            <Card key={w.id} className="bg-white border-cyan-200 shadow-md rounded-xl px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <span className="text-lg font-semibold text-cyan-900">{w.name}</span>
-              <div className="flex gap-2 justify-end">
+            <Card key={w.id} className="bg-white border-black shadow-lg rounded-xl px-8 py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <span className="text-3xl font-semibold text-cyan-900">{w.name}</span>
+              <div className="flex gap-3 justify-end">
                 <Button
-                  className="bg-gradient-to-br from-cyan-400 via-cyan-500 to-emerald-400 shadow font-bold text-white hover:scale-105 transition"
+                  className="bg-gradient-to-br from-cyan-500 via-cyan-600 to-emerald-500 shadow font-bold text-white hover:scale-105 transition border-black text-2xl"
                   onClick={() => router.push(`/workouts/${w.id}/session`)}
                 >
                   Начать
                 </Button>
-                <Button variant="outline" className="border-cyan-400 text-cyan-700 hover:bg-cyan-100" onClick={() => router.push(`/workouts/${w.id}/edit`)}>Редактировать</Button>
+                <Button variant="outline" className="border-black text-cyan-800 hover:bg-cyan-100 text-2xl" onClick={() => router.push(`/workouts/${w.id}/edit`)}>Редактировать</Button>
               </div>
             </Card>
           )}
         </div>
-        <Button className="mt-10 px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 font-bold shadow-lg rounded-lg w-full text-white" onClick={() => router.push("/workouts/new/edit")}>Добавить тренировку</Button>
+        <Button className="mt-12 px-10 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 font-bold shadow-xl rounded-lg w-full text-white border-black !text-2xl h-20" onClick={() => router.push("/workouts/new/edit")}>Добавить тренировку</Button>
       </div>
     </div>
   );
