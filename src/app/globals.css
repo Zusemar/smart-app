@@ -206,3 +206,17 @@ div#Bubble\.Bubble span {
     display: none !important;
   }
 }
+
+button {
+  border: 2px solid var(--color-primary, #205080);
+  border-radius: 1rem;
+  transition: box-shadow 0.2s, border-color 0.2s, border-width 0.2s;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
+  outline: none;
+}
+button:focus-visible, button:active {
+  border-color: var(--color-accent, #00e0e0);
+  border-width: 5px;
+  box-shadow: 0 0 0 6px var(--color-accent, #00e0e0), 0 2px 16px 0 rgba(0,0,0,0.15);
+  z-index: 1;
+}
