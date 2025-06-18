@@ -44,19 +44,19 @@ export default function Home() {
       <div className="w-full max-w-4xl lg:max-w-6xl xl:max-w-7xl 2xl:max-w-[96rem] grid grid-cols-1 sm:grid-cols-2 gap-10 mb-20">
         <button
           onClick={() => router.push("/journal")}
-          className="rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-xl hover:scale-[1.02] hover:-translate-y-1 transition-all text-white text-2xl sm:text-3xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold py-8 sm:py-10 lg:py-14 xl:py-20 px-6 w-full border-4 border-black"
+          className="rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-xl hover:scale-[1.02] hover:-translate-y-1 transition-all text-white text-2xl sm:text-3xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold py-8 sm:py-10 lg:py-14 xl:py-20 px-6 w-full border-4 border-[#1b378a]"
         >
           Журнал
         </button>
         <button
           onClick={() => router.push("/workouts")}
-          className="rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-xl hover:scale-[1.02] hover:-translate-y-1 transition-all text-white text-2xl sm:text-3xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold py-8 sm:py-10 lg:py-14 xl:py-20 px-6 w-full border-4 border-black"
+          className="rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-xl hover:scale-[1.02] hover:-translate-y-1 transition-all text-white text-2xl sm:text-3xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold py-8 sm:py-10 lg:py-14 xl:py-20 px-6 w-full border-4 border-[oklch(0.46_0.15_136.12)]"
         >
           Мои тренировки
         </button>
       </div>
       <GlowCard
-        className="cursor-pointer mb-20 w-48 sm:w-56 lg:w-72 xl:w-96 2xl:w-[30rem] h-48 sm:h-56 lg:h-72 xl:h-96 2xl:h-[30rem] text-2xl sm:text-3xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-white font-bold border-4 border-black hover:scale-[1.02] hover:-translate-y-1 transition-all"
+        className="cursor-pointer mb-20 w-48 sm:w-56 lg:w-72 xl:w-96 2xl:w-[30rem] h-48 sm:h-56 lg:h-72 xl:h-96 2xl:h-[30rem] text-2xl sm:text-3xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-white font-bold border-4 border-[#13aaad] hover:scale-[1.02] hover:-translate-y-1 transition-all"
         onClick={() => router.push("/workouts")}
       >
         начать тренировку
@@ -68,7 +68,7 @@ export default function Home() {
       )}
       <div className="w-full max-w-xs sm:max-w-sm lg:max-w-md xl:max-w-lg 2xl:max-w-xl">
         <button
-          className="rounded-2xl bg-[#1aa3a0] shadow-xl hover:scale-[1.02] hover:-translate-y-1 transition-all text-white text-2xl sm:text-3xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold py-8 sm:py-10 lg:py-14 xl:py-20 px-6 w-full border-4 border-black"
+          className="rounded-2xl bg-[#1aa3a0] shadow-xl hover:scale-[1.02] hover:-translate-y-1 transition-all text-white text-2xl sm:text-3xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold py-8 sm:py-10 lg:py-14 xl:py-20 px-6 w-full border-4 border-[#007072]"
           onClick={() => router.push("/exercises")}
         >
           База упражнений
