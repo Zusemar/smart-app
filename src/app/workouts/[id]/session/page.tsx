@@ -180,19 +180,19 @@ export default function WorkoutSessionPage() {
   // --- Только после всех хуков идут любые return! ---
   if (!workout) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <span className="text-3xl">Тренировка не найдена</span>
+      <div className="flex items-center justify-center min-h-screen">
+        <span className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl">Тренировка не найдена</span>
       </div>
     );
   }
   if (isFinished) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen gap-10 bg-gray-100">
-        <Card className="p-12 text-center max-w-lg mx-auto border-black">
-          <h2 className="text-6xl font-bold mb-6 text-emerald-700">Тренировка завершена!</h2>
-          <p className="mb-8 text-3xl">Отличная работа! Так держать 💪</p>
-          <p className="mb-8 text-2xl text-gray-700">Скажи "вернуться" чтобы вернуться на главный экран</p>
-          <Button onClick={() => router.push("/")} className="bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold py-4 px-8 rounded-lg shadow-lg hover:scale-105 transition border-black text-2xl">На главный экран</Button>
+      <div className="flex flex-col items-center justify-center min-h-screen gap-6 md:gap-8 lg:gap-10 px-2 md:px-4">
+        <Card className="p-4 md:p-8 lg:p-12 xl:p-20 2xl:p-24 text-center max-w-sm md:max-w-lg lg:max-w-xl xl:max-w-3xl 2xl:max-w-5xl mx-auto border-black">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-6xl 2xl:text-7xl font-bold mb-4 md:mb-6 lg:mb-8 text-emerald-700 break-words">Тренировка завершена!</h2>
+          <p className="mb-4 md:mb-6 lg:mb-8 text-lg md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl break-words">Отличная работа! Так держать 💪</p>
+          <p className="mb-4 md:mb-6 lg:mb-8 text-base md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-700 break-words">Скажи "вернуться" чтобы вернуться на главный экран</p>
+          <Button onClick={() => router.push("/")} className="bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold py-3 md:py-4 lg:py-6 px-4 md:px-6 lg:px-8 rounded-lg shadow-lg hover:scale-105 transition border-black text-lg md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl w-full max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto 2xl:h-20">На главный экран</Button>
         </Card>
       </div>
     );
@@ -305,74 +305,73 @@ export default function WorkoutSessionPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white via-slate-100 to-cyan-50 pb-[72px]">
-      <Card className="w-[90vw] max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl min-h-[500px] min-w-[320px] flex flex-col justify-between p-0 overflow-hidden">
+    <div className="flex items-center justify-center min-h-screen pb-[72px] mt-0 pt-0">
+      <Card className="w-full max-w-[120rem] min-h-[600px] min-w-[320px] flex flex-col justify-between p-0 overflow-hidden mt-0">
         {/* Top Section */}
-        <div className="flex items-center justify-between px-8 py-4 lg:py-6 xl:py-8 border-b bg-cyan-50">
-          <div className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-bold text-cyan-700">{ex.name}</div>
+        <div className="flex items-center justify-between px-4 py-4 lg:py-6 xl:py-8 border-b bg-cyan-50">
+          <div className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-extrabold text-cyan-700">{ex.name}</div>
           {ex.type === "Статика" && isStarted && (
             <div className="flex items-center gap-2">
-              <span className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-mono">{Math.floor(timer/60)}:{(timer%60).toString().padStart(2,"0")}</span>
+              <span className="text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-mono">{Math.floor(timer/60)}:{(timer%60).toString().padStart(2,"0")}</span>
             </div>
           )}
         </div>
         {/* Assistant message */}
         {assistantMessage && (
-          <div className="mx-8 my-2 p-3 lg:p-4 xl:p-5 bg-white bg-opacity-80 rounded shadow text-slate-900 text-center text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+          <div className="mx-4 my-2 p-3 lg:p-4 xl:p-5 bg-white bg-opacity-80 rounded shadow text-slate-900 text-center text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl">
             {assistantMessage}
           </div>
         )}
 
         {/* Center Section */}
-        <div className="flex flex-1 items-center justify-between px-8 py-6 lg:py-8 xl:py-10 gap-8">
+        <div className="flex-1 flex flex-col md:flex-col xl:flex-row items-center justify-between px-2 py-2 md:py-2 lg:py-3 xl:py-4 gap-2 md:gap-4 lg:gap-6 xl:gap-8">
           {/* Video */}
-          <div className="flex-1 flex items-center justify-center">
-            <div className="aspect-square w-40 sm:w-56 lg:w-64 xl:w-72 2xl:w-80 bg-slate-200 rounded-xl overflow-hidden flex items-center justify-center">
+          <div className="flex-1 flex items-center justify-center w-full xl:w-auto mb-4 md:mb-6 xl:mb-0">
+            <div className="aspect-square w-32 h-32 md:w-40 md:h-40 lg:w-52 lg:h-52 xl:w-[20rem] xl:h-[20rem] 2xl:w-[24rem] 2xl:h-[24rem] bg-slate-200 rounded-2xl overflow-hidden flex items-center justify-center">
               <img src={getVideoUrl(ex)} alt="DomFit Icon" className="w-full h-full object-cover" />
             </div>
           </div>
-
           {/* Results */}
-          <div className="flex-1 flex flex-col items-center justify-center gap-6 lg:gap-8">
+          <div className="flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 lg:gap-8 w-full">
             {ex.type === "Статика" ? (
-              <div className="flex flex-col items-center gap-4 lg:gap-6 w-full">
-                <div className="text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-cyan-700 text-center w-full">Итоговое время</div>
-                <div className="flex items-center gap-3 lg:gap-4 justify-center w-full">
+              <div className="flex flex-col items-center gap-2 md:gap-4 lg:gap-6 w-full">
+                <div className="font-bold text-cyan-700 text-center w-full text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">Итоговое время</div>
+                <div className="flex items-center gap-2 md:gap-4 lg:gap-6 justify-center w-full">
                   <Button 
                     variant="outline" 
                     onClick={() => handleChangeTime(-10)} 
                     disabled={isStarted}
-                    className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl py-3 lg:py-4 xl:py-6 2xl:py-8 px-6 lg:px-8 xl:px-10 2xl:px-12 hover:scale-[1.02] hover:-translate-y-0.5 transition-all min-w-[120px] lg:min-w-[160px] xl:min-w-[200px] 2xl:min-w-[240px]"
+                    className="text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl px-2 md:px-3 lg:px-4 xl:px-6 py-2 md:py-3 lg:py-4 !h-8 md:!h-10 lg:!h-12 xl:!h-14 2xl:!h-16 min-w-[60px] md:min-w-[80px] lg:min-w-[120px] xl:min-w-[180px] 2xl:min-w-[220px] hover:scale-[1.02] hover:-translate-y-0.5 transition-all"
                   >
                     -10 сек
                   </Button>
-                  <span className="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-mono">{Math.floor(selectedTime/60)}:{(selectedTime%60).toString().padStart(2,"0")}</span>
+                  <span className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-mono">{Math.floor(selectedTime/60)}:{(selectedTime%60).toString().padStart(2,"0")}</span>
                   <Button 
                     variant="outline" 
                     onClick={() => handleChangeTime(10)} 
                     disabled={isStarted}
-                    className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl py-3 lg:py-4 xl:py-6 2xl:py-8 px-6 lg:px-8 xl:px-10 2xl:px-12 hover:scale-[1.02] hover:-translate-y-0.5 transition-all min-w-[120px] lg:min-w-[160px] xl:min-w-[200px] 2xl:min-w-[240px]"
+                    className="text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl px-2 md:px-3 lg:px-4 xl:px-6 py-2 md:py-3 lg:py-4 !h-8 md:!h-10 lg:!h-12 xl:!h-14 2xl:!h-16 min-w-[60px] md:min-w-[80px] lg:min-w-[120px] xl:min-w-[180px] 2xl:min-w-[220px] hover:scale-[1.02] hover:-translate-y-0.5 transition-all"
                   >
                     +10 сек
                   </Button>
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center gap-4 lg:gap-6">
-                <div className="text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-cyan-700">Повторения</div>
-                <div className="flex items-center gap-3 lg:gap-4">
+              <div className="flex flex-col items-center gap-2 md:gap-4 lg:gap-6">
+                <div className="font-bold text-cyan-700 text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">Повторения</div>
+                <div className="flex items-center justify-center gap-2 md:gap-4 lg:gap-6 w-full">
                   <Button 
                     variant="outline" 
                     onClick={() => handleChangeReps(-1)}
-                    className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl py-3 lg:py-4 xl:py-6 2xl:py-8 px-6 lg:px-8 xl:px-10 2xl:px-12 hover:scale-[1.02] hover:-translate-y-0.5 transition-all min-w-[120px] lg:min-w-[160px] xl:min-w-[200px] 2xl:min-w-[240px]"
+                    className="text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl px-2 md:px-3 lg:px-4 xl:px-6 py-2 md:py-3 lg:py-4 !h-8 md:!h-10 lg:!h-12 xl:!h-14 2xl:!h-16 min-w-[60px] md:min-w-[80px] lg:min-w-[120px] xl:min-w-[180px] 2xl:min-w-[220px] hover:scale-[1.02] hover:-translate-y-0.5 transition-all"
                   >
                     -1
                   </Button>
-                  <span className="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-mono">{reps}</span>
+                  <span className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-mono min-w-[40px] md:min-w-[60px] lg:min-w-[80px] xl:min-w-[120px] text-center">{reps}</span>
                   <Button 
                     variant="outline" 
                     onClick={() => handleChangeReps(1)}
-                    className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl py-3 lg:py-4 xl:py-6 2xl:py-8 px-6 lg:px-8 xl:px-10 2xl:px-12 hover:scale-[1.02] hover:-translate-y-0.5 transition-all min-w-[120px] lg:min-w-[160px] xl:min-w-[200px] 2xl:min-w-[240px]"
+                    className="text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl px-2 md:px-3 lg:px-4 xl:px-6 py-2 md:py-3 lg:py-4 !h-8 md:!h-10 lg:!h-12 xl:!h-14 2xl:!h-16 min-w-[60px] md:min-w-[80px] lg:min-w-[120px] xl:min-w-[180px] 2xl:min-w-[220px] hover:scale-[1.02] hover:-translate-y-0.5 transition-all"
                   >
                     +1
                   </Button>
@@ -383,14 +382,14 @@ export default function WorkoutSessionPage() {
         </div>
 
         {/* Bottom Section */}
-        <div className="flex items-center justify-between px-4 sm:px-8 py-6 sm:py-8 lg:py-10 xl:py-12 border-t bg-cyan-50 gap-4 sm:gap-8">
+        <div className="flex flex-col xl:flex-row items-center justify-between px-4 xl:px-10 py-6 xl:py-10 border-t bg-cyan-50 gap-4 xl:gap-8">
           {isLast ? (
             <>
               {ex.type === "Статика" ? (
                 <Button 
                   size="lg" 
                   onClick={handleStartStatic} 
-                  className="font-bold min-w-[140px] sm:min-w-[180px] lg:min-w-[220px] xl:min-w-[260px] text-lg sm:text-xl lg:text-2xl xl:text-3xl py-3 sm:py-4 lg:py-5 xl:py-6 px-4 sm:px-6 lg:px-8 xl:px-10 hover:scale-[1.02] hover:-translate-y-0.5 transition-all" 
+                  className="font-bold min-w-[180px] xl:min-w-[220px] text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-4xl px-6 py-4 !h-14 md:!h-16 lg:!h-20 xl:!h-24 2xl:!h-20 hover:scale-[1.02] hover:-translate-y-0.5 transition-all mb-4 xl:mb-0" 
                   disabled={isStarted}
                 >
                   Начать упражнение
@@ -400,7 +399,7 @@ export default function WorkoutSessionPage() {
                 variant="outline" 
                 size="lg" 
                 onClick={handleFinish} 
-                className="text-red-500 border-red-300 min-w-[140px] sm:min-w-[200px] lg:min-w-[240px] xl:min-w-[280px] 2xl:min-w-[320px] text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl py-4 sm:py-5 lg:py-6 xl:py-8 2xl:py-10 px-6 sm:px-8 lg:px-10 xl:px-12 2xl:px-14 hover:scale-[1.02] hover:-translate-y-0.5 transition-all"
+                className="text-red-500 border-red-300 min-w-[220px] xl:min-w-[280px] text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-4xl px-6 py-4 !h-14 md:!h-16 lg:!h-20 xl:!h-24 2xl:!h-20 hover:scale-[1.02] hover:-translate-y-0.5 transition-all"
               >
                 Закончить тренировку
               </Button>
@@ -411,7 +410,7 @@ export default function WorkoutSessionPage() {
                 <Button 
                   size="lg" 
                   onClick={handleStartStatic} 
-                  className="font-bold min-w-[140px] sm:min-w-[180px] lg:min-w-[220px] xl:min-w-[260px] text-lg sm:text-xl lg:text-2xl xl:text-3xl py-3 sm:py-4 lg:py-5 xl:py-6 px-4 sm:px-6 lg:px-8 xl:px-10 hover:scale-[1.02] hover:-translate-y-0.5 transition-all" 
+                  className="font-bold min-w-[180px] xl:min-w-[220px] text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-4xl px-6 py-4 !h-14 md:!h-16 lg:!h-20 xl:!h-24 2xl:!h-20 hover:scale-[1.02] hover:-translate-y-0.5 transition-all mb-4 xl:mb-0" 
                   disabled={isStarted}
                 >
                   Начать упражнение
@@ -421,7 +420,7 @@ export default function WorkoutSessionPage() {
                 variant="outline" 
                 size="lg" 
                 onClick={handleNext} 
-                className="min-w-[140px] sm:min-w-[180px] lg:min-w-[220px] xl:min-w-[260px] text-lg sm:text-xl lg:text-2xl xl:text-3xl py-3 sm:py-4 lg:py-5 xl:py-6 px-4 sm:px-6 lg:px-8 xl:px-10 hover:scale-[1.02] hover:-translate-y-0.5 transition-all"
+                className="min-w-[180px] xl:min-w-[220px] text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-4xl px-6 py-4 !h-14 md:!h-16 lg:!h-20 xl:!h-24 2xl:!h-20 hover:scale-[1.02] hover:-translate-y-0.5 transition-all"
               >
                 Следующее упражнение
               </Button>

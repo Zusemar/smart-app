@@ -127,37 +127,34 @@ export default function WorkoutsPage() {
   }, [router, userId]);
 
   return (
-    <div className="min-h-screen bg-gray-100 text-slate-900 flex flex-col items-center pt-16 pb-[80px]">
-      <div className="w-full max-w-xl lg:max-w-2xl xl:max-w-3xl 2xl:max-w-4xl px-4">
-        <BackButton className="w-fit mb-8 bg-white border-black text-cyan-800 shadow-lg hover:bg-cyan-100 hover:scale-[1.02] hover:-translate-y-0.5 transition-all font-semibold px-8 py-3 text-xl sm:text-2xl lg:text-3xl" />
-
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-extrabold mb-12 text-cyan-800 drop-shadow-md">Мои тренировки</h1>
-        
+    <div className="min-h-screen text-slate-900 flex flex-col items-center pt-24 pb-[80px]">
+      <div className="w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-3xl 2xl:max-w-5xl px-2">
+        <BackButton className="w-fit mb-8 bg-white border-black text-cyan-800 shadow-lg hover:bg-cyan-100 hover:scale-[1.02] hover:-translate-y-0.5 transition-all font-semibold px-6 py-3 text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl" />
+        <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-8xl 2xl:text-9xl font-extrabold mb-8 text-cyan-800 drop-shadow-md">Мои тренировки</h1>
         {assistantMessage && (
-          <Card className="mb-8 p-5 bg-cyan-100 border-black text-cyan-800 text-xl sm:text-2xl lg:text-3xl xl:text-4xl">
+          <Card className="mb-6 p-4 bg-cyan-100 border-black text-cyan-800 text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl">
             {assistantMessage}
           </Card>
         )}
-
-        <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col gap-4 md:gap-6 lg:gap-8 w-full">
           {workouts.length === 0 && (
-            <Card className="p-6 bg-white border-black text-cyan-800 text-center text-xl sm:text-2xl lg:text-3xl xl:text-4xl shadow-lg">
+            <Card className="p-4 bg-white border-black text-cyan-800 text-center text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl shadow-lg">
               Пока не создано ни одной тренировки
             </Card>
           )}
           {workouts.map(w =>
-            <Card key={w.id} className="bg-white border-black shadow-lg rounded-xl px-6 sm:px-8 py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <span className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-semibold text-cyan-900">{w.name}</span>
-              <div className="flex gap-3 justify-end">
+            <Card key={w.id} className="bg-white border-black shadow-lg rounded-xl px-4 md:px-6 py-3 md:py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4">
+              <span className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-semibold text-cyan-900">{w.name}</span>
+              <div className="flex gap-3 md:gap-4 justify-end">
                 <Button
-                  className="bg-gradient-to-br from-cyan-500 via-cyan-600 to-emerald-500 shadow font-bold text-white hover:scale-[1.02] hover:-translate-y-0.5 transition-all border-black text-lg sm:text-xl lg:text-2xl xl:text-3xl px-4 sm:px-6 py-2 sm:py-3"
+                  className="bg-gradient-to-br from-cyan-500 via-cyan-600 to-emerald-500 shadow font-bold text-white hover:scale-[1.02] hover:-translate-y-0.5 transition-all border-black text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl px-4 md:px-6 py-2 md:py-3 !h-8 md:!h-10 lg:!h-12 xl:!h-16 2xl:!h-20"
                   onClick={() => router.push(`/workouts/${w.id}/session`)}
                 >
                   Начать
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="border-black text-cyan-800 hover:bg-cyan-100 hover:scale-[1.02] hover:-translate-y-0.5 transition-all text-lg sm:text-xl lg:text-2xl xl:text-3xl px-4 sm:px-6 py-2 sm:py-3" 
+                  className="border-black text-cyan-800 hover:bg-cyan-100 hover:scale-[1.02] hover:-translate-y-0.5 transition-all text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl px-4 md:px-6 py-2 md:py-3 !h-8 md:!h-10 lg:!h-12 xl:!h-16 2xl:!h-20" 
                   onClick={() => router.push(`/workouts/${w.id}/edit`)}
                 >
                   Редактировать
@@ -167,7 +164,7 @@ export default function WorkoutsPage() {
           )}
         </div>
         <Button 
-          className="mt-12 px-8 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-cyan-600 to-blue-600 font-bold shadow-xl rounded-lg w-full text-white border-black text-xl sm:text-2xl lg:text-3xl xl:text-4xl h-16 sm:h-20 lg:h-24 hover:scale-[1.02] hover:-translate-y-0.5 transition-all" 
+          className="mt-10 px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-cyan-600 to-blue-600 font-bold shadow-xl rounded-lg w-full text-white border-black text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl !h-8 md:!h-10 lg:!h-12 xl:!h-16 2xl:!h-20 hover:scale-[1.02] hover:-translate-y-0.5 transition-all" 
           onClick={() => router.push("/workouts/new/edit")}
         >
           Добавить тренировку
