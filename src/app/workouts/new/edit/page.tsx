@@ -134,11 +134,11 @@ export default function NewWorkoutPage() {
                   </Card>
                 ))}
               </div>
-              <Button onClick={() => setAddNewExerciseOpen(true)} variant="secondary" className="mb-2 md:mb-4 w-full bg-cyan-300 text-cyan-900 hover:bg-cyan-400 font-bold rounded-lg border-black text-sm md:text-base h-8 md:h-10">+ Новое упражнение</Button>
+              <Button onClick={() => setAddNewExerciseOpen(true)} variant="secondary" className="w-full bg-cyan-300 text-cyan-900 hover:bg-cyan-400 font-bold rounded-lg border-black text-sm md:text-base h-8 md:h-10">+ Новое упражнение</Button>
               {selectedExercise && (
                 <div className="mt-2 md:mt-4 border-t border-black pt-2 md:pt-4 space-y-2 md:space-y-4">
                   <div className="font-bold text-cyan-800 mb-2 md:mb-4 text-sm md:text-base">{selectedExercise.name}</div>
-                  <div className="flex flex-col gap-2 md:gap-4 mb-2 md:mb-4">
+                  <div className="flex flex-row gap-2 md:gap-4 mb-2 md:mb-4">
                     <Input
                       placeholder="Подходы"
                       value={sets}
@@ -192,7 +192,7 @@ export default function NewWorkoutPage() {
                     <option value="Динамика">Динамика</option>
                     <option value="Статика">Статика</option>
                   </select>
-                  <div className="flex flex-col gap-2 md:gap-4 mb-2 md:mb-4">
+                  <div className="flex flex-row gap-2 md:gap-4 mb-2 md:mb-4">
                     <Input
                       placeholder="Подходы"
                       value={sets}

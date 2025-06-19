@@ -163,16 +163,16 @@ export default function EditWorkoutPage() {
                   </Card>
                 ))}
               </div>
-              <Button onClick={() => setAddNewExerciseOpen(true)} variant="secondary" className="mb-4 md:mb-6 w-full bg-cyan-300 text-cyan-900 hover:bg-cyan-400 font-bold rounded-lg border-black text-base md:text-lg lg:text-xl h-8 md:h-10 lg:h-12">+ Новое упражнение</Button>
+              <Button onClick={() => setAddNewExerciseOpen(true)} variant="secondary" className="w-full bg-cyan-300 text-cyan-900 hover:bg-cyan-400 font-bold rounded-lg border-black text-base md:text-lg lg:text-xl h-8 md:h-10 lg:h-12">+ Новое упражнение</Button>
               {selectedExercise && (
                 <div className="mt-4 md:mt-6 border-t border-black pt-4 md:pt-6 space-y-4 md:space-y-6">
                   <div className="font-bold text-cyan-800 mb-4 md:mb-6 text-base md:text-lg lg:text-xl">{selectedExercise.name}</div>
-                  <div className="flex flex-col sm:flex-row gap-2 md:gap-4 mb-4 md:mb-6">
+                  <div className="flex flex-row gap-2 md:gap-3 mb-2">
                     <Input
                       placeholder="Подходы"
                       value={sets}
                       onChange={e => setSets(e.target.value)}
-                      className="w-24 md:w-32 bg-cyan-100 border-black text-cyan-900 font-bold text-base md:text-lg lg:text-xl !h-8 md:!h-10 lg:!h-12 px-2 md:px-4"
+                      className="w-24 md:w-28 bg-cyan-100 border-black text-cyan-900 font-bold text-sm md:text-base !h-8 px-2"
                       type="number"
                       min={1}
                     />
@@ -180,7 +180,7 @@ export default function EditWorkoutPage() {
                       placeholder="Повторы/сек"
                       value={target}
                       onChange={e => setTarget(e.target.value)}
-                      className="w-28 md:w-36 bg-cyan-100 border-black text-cyan-900 font-bold text-base md:text-lg lg:text-xl !h-8 md:!h-10 lg:!h-12 px-2 md:px-4"
+                      className="w-28 md:w-32 bg-cyan-100 border-black text-cyan-900 font-bold text-sm md:text-base !h-8 px-2"
                     />
                   </div>
                   <Button
@@ -221,18 +221,18 @@ export default function EditWorkoutPage() {
                     <option value="Динамика">Динамика</option>
                     <option value="Статика">Статика</option>
                   </select>
-                  <div className="flex flex-col sm:flex-row gap-2 md:gap-4 mb-2 md:mb-4">
+                  <div className="flex flex-row gap-2 md:gap-3 mb-2">
                     <Input
                       placeholder="Подходы"
                       value={sets}
                       onChange={e => setSets(e.target.value)}
-                      className="w-24 md:w-32 bg-cyan-100 border-black text-cyan-900 font-bold text-sm md:text-base lg:text-lg !h-8 md:!h-10 lg:!h-12 px-2 md:px-4"
+                      className="w-24 md:w-28 bg-cyan-100 border-black text-cyan-900 font-bold text-xs md:text-sm !h-8 px-2"
                     />
                     <Input
                       placeholder="Повторы/сек"
                       value={target}
                       onChange={e => setTarget(e.target.value)}
-                      className="w-28 md:w-36 bg-cyan-100 border-black text-cyan-900 font-bold text-sm md:text-base lg:text-lg !h-8 md:!h-10 lg:!h-12 px-2 md:px-4"
+                      className="w-28 md:w-32 bg-cyan-100 border-black text-cyan-900 font-bold text-xs md:text-sm !h-8 px-2"
                     />
                   </div>
                   <Button
