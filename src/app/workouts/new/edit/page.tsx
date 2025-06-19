@@ -158,6 +158,7 @@ export default function NewWorkoutPage() {
                     onClick={() => handleAddExerciseToWorkout(selectedExercise)}
                     variant="default"
                     className="bg-gradient-to-r from-cyan-600 to-emerald-700 font-bold rounded-lg border-black text-xs md:text-sm !h-8 md:!h-10 w-full py-2 md:py-3 px-2 md:px-4 mt-2 md:mt-4"
+                    disabled={!selectedExercise?.name.trim()}
                   >
                     Добавить в тренировку
                   </Button>
@@ -209,6 +210,7 @@ export default function NewWorkoutPage() {
                     onClick={handleAddNewExerciseToWorkoutAndBase}
                     variant="default"
                     className="bg-gradient-to-r from-cyan-600 to-emerald-700 font-bold rounded-lg text-white text-xs md:text-sm h-8 md:h-10 w-full"
+                    disabled={!newExercise.name.trim()}
                   >
                     Добавить в тренировку и базу
                   </Button>
@@ -231,7 +233,7 @@ export default function NewWorkoutPage() {
         </div>
         {/* Кнопки управления */}
         <div className="flex flex-col md:flex-row gap-3 md:gap-4 justify-end mt-6 md:mt-8">
-          <Button variant="default" className="bg-gradient-to-r from-cyan-500 to-emerald-600 font-bold rounded-lg shadow text-base md:text-lg lg:text-xl !h-12 md:!h-14 lg:!h-16 w-full md:w-64 lg:w-80 px-2 md:px-4" onClick={handleSave}>
+          <Button variant="default" className="bg-gradient-to-r from-cyan-500 to-emerald-600 font-bold rounded-lg shadow text-base md:text-lg lg:text-xl !h-12 md:!h-14 lg:!h-16 w-full md:w-64 lg:w-80 px-2 md:px-4" onClick={handleSave} disabled={!workoutName.trim()}>
             Сохранить тренировку
           </Button>
         </div>
