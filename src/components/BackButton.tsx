@@ -5,7 +5,7 @@ export function BackButton({ className = "" }: { className?: string }) {
   const router = useRouter();
   return (
     <button
-      onClick={() => router.back()}
+      onClick={() => router.push("/")}
       className={
         "flex items-center gap-2 px-4 py-2 rounded-lg border border-black text-cyan-300 bg-[#234468]/30 hover:bg-[#234468]/50 transition font-semibold shadow-sm mb-6 " +
         className
