@@ -111,7 +111,12 @@ def get_workout(user_id: str, workout_id: int):
 @app.post("/api/workouts", response_model=WorkoutSchema)
 def create_workout(workout: WorkoutSchema):
     db = SessionLocal()
-    w = Workout(user_id=workout.user_id, name=workout.name, exercises=[ex.dict() for ex in workout.exercises])
+    # If name is empty, assign default name
+    name = workout.name.strip()
+    if not name:
+        count = db.query(Workout).filter(Workout.user_id == workout.user_id).count()
+        name = f"Тренировка {count + 1}"
+    w = Workout(user_id=workout.user_id, name=name, exercises=[ex.dict() for ex in workout.exercises])
     db.add(w)
     db.commit()
     db.refresh(w)
