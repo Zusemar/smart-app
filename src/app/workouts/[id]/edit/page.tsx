@@ -145,7 +145,7 @@ export default function EditWorkoutPage() {
             <DialogTrigger asChild>
               <Button type="button" variant="outline" className="flex-[2] font-bold text-cyan-800 border-black hover:bg-cyan-100 rounded-lg text-lg md:text-xl lg:text-2xl !h-8 md:!h-10 lg:!h-12 px-2 md:px-4 whitespace-nowrap flex items-center justify-center">добавить упражнение</Button>
             </DialogTrigger>
-            <DialogContent className="bg-white border-black max-w-full md:max-w-xl lg:max-w-2xl xl:max-w-3xl 2xl:max-w-5xl w-full text-slate-900 p-2 md:p-4 lg:p-8 max-h-[95vh] overflow-y-auto">
+            <DialogContent className="bg-white border-black max-w-full md:max-w-xl lg:max-w-2xl xl:max-w-3xl 2xl:max-w-5xl w-full text-slate-900 p-2 md:p-4 lg:p-8 max-h-[95vh] overflow-y-auto pb-[72px]">
               <DialogHeader>
                 <DialogTitle className="text-cyan-800 font-bold text-lg md:text-xl lg:text-2xl mb-4 md:mb-6">Добавить упражнение</DialogTitle>
               </DialogHeader>
