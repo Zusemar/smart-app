@@ -136,7 +136,7 @@ export default function WorkoutsPage() {
             {assistantMessage}
           </Card>
         )}
-        <div className="flex flex-col gap-4 md:gap-6 lg:gap-8 w-full">
+        <div className="flex flex-col gap-4 md:gap-6 lg:gap-8 w-full max-h-[28rem] overflow-y-auto">
           {workouts.length === 0 && (
             <Card className="p-4 bg-white border-black text-cyan-800 text-center text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl shadow-lg">
               Пока не создано ни одной тренировки
