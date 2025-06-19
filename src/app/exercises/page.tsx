@@ -55,7 +55,7 @@ export default function ExercisesPage() {
   };
 
   return (
-    <div className="min-h-screen text-slate-900 flex flex-col items-center pt-24 pb-[80px]">
+    <div className="min-h-screen text-slate-900 flex flex-col items-center pt-24 pb-[80px]" style={{ marginBottom: '50px' }}>
       <div className="w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-3xl 2xl:max-w-5xl px-2">
         <BackButton className="w-fit mb-8 bg-white border-black text-cyan-800 shadow-lg hover:bg-cyan-100 hover:scale-[1.02] hover:-translate-y-0.5 transition-all font-semibold px-6 py-3 h-10 md:h-12 lg:h-16 text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl" />
         <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-8xl 2xl:text-9xl font-extrabold mb-8 text-cyan-800 drop-shadow-md">База упражнений</h1>
@@ -90,7 +90,7 @@ export default function ExercisesPage() {
           </select>
           <Button 
             onClick={addExercise} 
-            className="col-span-3 border-black text-base md:text-lg lg:text-xl xl:text-2xl h-8 md:h-10 lg:h-12 hover:scale-[1.02] hover:-translate-y-0.5 transition-all"
+            className="col-span-3 border-black text-sm md:text-base lg:text-lg xl:text-xl h-8 md:h-10 lg:h-12 hover:scale-[1.02] hover:-translate-y-0.5 transition-all"
           >
             Добавить
           </Button>

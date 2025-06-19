@@ -35,7 +35,7 @@ export default function JournalPage() {
   }, [userId]);
 
   return (
-    <div className="min-h-screen text-slate-900 flex flex-col items-center pt-24 pb-[80px]">
+    <div className="min-h-screen text-slate-900 flex flex-col items-center pt-24 pb-[80px]" style={{ marginBottom: '50px' }}>
       <div className="w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-3xl 2xl:max-w-5xl">
         <BackButton className="w-fit mb-8 bg-white border-black text-cyan-800 shadow-lg hover:bg-cyan-100 transition font-semibold px-6 py-3 text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl" />
         <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-8xl 2xl:text-9xl font-extrabold mb-8 text-cyan-800 drop-shadow-md">Журнал</h1>
