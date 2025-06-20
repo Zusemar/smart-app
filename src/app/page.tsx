@@ -49,7 +49,7 @@ export default function Home() {
           Журнал
         </button>
         <GlowCard
-          className="cursor-pointer w-40 h-40 sm:w-52 sm:h-52 rounded-full flex items-center justify-center text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-6xl text-white font-bold border-2 border-[#13aaad] hover:scale-[1.03] hover:-translate-y-1 transition-all min-h-0 flex-shrink-0"
+          className="cursor-pointer w-40 h-40 sm:w-52 sm:h-52 rounded-full flex items-center justify-center text-center text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl text-white font-bold border-2 border-[#13aaad] hover:scale-[1.03] hover:-translate-y-1 transition-all min-h-0 flex-shrink-0"
           onClick={() => router.push("/workouts")}
         >
           Начать тренировку
