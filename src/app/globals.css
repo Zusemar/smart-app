@@ -222,6 +222,7 @@ button:focus-visible, button:active {
 }
 
 .dialog-keyboard-open {
-  transform: translateY(-120px);
-  transition: transform 0.2s;
+  transform: translateY(-200px);
+  max-height: 50vh !important;
+  transition: transform 0.2s, max-height 0.2s;
 }
