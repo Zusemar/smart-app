@@ -220,3 +220,8 @@ button:focus-visible, button:active {
   box-shadow: 0 0 0 6px var(--color-accent, #00e0e0), 0 2px 16px 0 rgba(0,0,0,0.15);
   z-index: 1;
 }
+
+.dialog-keyboard-open {
+  transform: translateY(-120px);
+  transition: transform 0.2s;
+}

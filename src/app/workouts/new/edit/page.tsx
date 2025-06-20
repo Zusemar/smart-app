@@ -26,6 +26,20 @@ type WorkoutExercise = {
   target: string;
 };
 
+// Добавляем хук для отслеживания открытия клавиатуры
+function useKeyboardOpen() {
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+  useEffect(() => {
+    const initialHeight = window.innerHeight;
+    function onResize() {
+      setKeyboardOpen(window.innerHeight < initialHeight - 100);
+    }
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+  return keyboardOpen;
+}
+
 export default function NewWorkoutPage() {
   const router = useRouter();
   const [userId, setUserId] = useState<string>("");
@@ -44,6 +58,8 @@ export default function NewWorkoutPage() {
   const [selectedExercise, setSelectedExercise] = useState<BaseExercise | null>(null);
   const [sets, setSets] = useState("");
   const [target, setTarget] = useState("");
+
+  const keyboardOpen = useKeyboardOpen();
 
   useEffect(() => {
     const assistant = getAssistant();
@@ -86,6 +102,7 @@ export default function NewWorkoutPage() {
   
   function handleSave() {
     if (!userId) return;
+    if (exercises.length === 0) return; // Запрет на сохранение без упражнений
 
     const wrk = {
       id: Date.now(),
@@ -116,7 +133,7 @@ export default function NewWorkoutPage() {
             <DialogTrigger asChild>
               <Button type="button" variant="outline" className="flex-[2] font-bold text-cyan-800 border-black hover:bg-cyan-100 rounded-lg text-lg md:text-xl !h-8 md:!h-10 px-2 md:px-4 whitespace-nowrap flex items-center justify-center">добавить упражнение</Button>
             </DialogTrigger>
-            <DialogContent className="bg-white border-black max-w-md md:max-w-lg lg:max-w-xl w-full text-slate-900 p-2 md:p-4 max-h-[95vh] overflow-y-auto pb-24 md:pb-32 lg:pb-36 xl:pb-40 2xl:pb-44 mb-4">
+            <DialogContent className={`bg-white border-black max-w-md md:max-w-lg lg:max-w-xl w-full text-slate-900 p-2 md:p-4 max-h-[95vh] overflow-y-auto pb-24 md:pb-32 lg:pb-36 xl:pb-40 2xl:pb-44 mb-4 ${keyboardOpen ? 'dialog-keyboard-open' : ''}`}>
               <DialogHeader>
                 <DialogTitle className="text-cyan-800 font-bold text-base md:text-lg mb-2 md:mb-4">Добавить упражнение</DialogTitle>
               </DialogHeader>
@@ -165,7 +182,7 @@ export default function NewWorkoutPage() {
                 </div>
               )}
               <Dialog open={addNewExerciseOpen} onOpenChange={setAddNewExerciseOpen}>
-                <DialogContent className="bg-white border-black max-w-md md:max-w-lg lg:max-w-xl w-full rounded-xl text-slate-900 p-2 md:p-4 max-h-[98vh] overflow-y-auto">
+                <DialogContent className={`bg-white border-black max-w-md md:max-w-lg lg:max-w-xl w-full rounded-xl text-slate-900 p-2 md:p-4 max-h-[98vh] overflow-y-auto ${keyboardOpen ? 'dialog-keyboard-open' : ''}`}>
                   <DialogHeader>
                     <DialogTitle className="text-cyan-800 text-sm md:text-base mb-2 md:mb-4">Новое упражнение</DialogTitle>
                   </DialogHeader>
@@ -233,7 +250,7 @@ export default function NewWorkoutPage() {
         </div>
         {/* Кнопки управления */}
         <div className="flex flex-col md:flex-row gap-3 md:gap-4 justify-end mt-6 md:mt-8">
-          <Button variant="default" className="bg-gradient-to-r from-cyan-500 to-emerald-600 font-bold rounded-lg shadow text-base md:text-lg lg:text-xl !h-12 md:!h-14 lg:!h-16 w-full md:w-64 lg:w-80 px-2 md:px-4" onClick={handleSave} disabled={!workoutName.trim()}>
+          <Button variant="default" className="bg-gradient-to-r from-cyan-500 to-emerald-600 font-bold rounded-lg shadow text-base md:text-lg lg:text-xl !h-12 md:!h-14 lg:!h-16 w-full md:w-64 lg:w-80 px-2 md:px-4" onClick={handleSave} disabled={!workoutName.trim() || exercises.length === 0}>
             Сохранить тренировку
           </Button>
         </div>
