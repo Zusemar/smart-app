@@ -145,7 +145,7 @@ export default function EditWorkoutPage() {
             <DialogTrigger asChild>
               <Button type="button" variant="outline" className="flex-[2] font-bold text-cyan-800 border-black hover:bg-cyan-100 rounded-lg text-lg md:text-xl lg:text-2xl !h-8 md:!h-10 lg:!h-12 px-2 md:px-4 whitespace-nowrap flex items-center justify-center">добавить упражнение</Button>
             </DialogTrigger>
-            <DialogContent className="bg-white border-black max-w-full md:max-w-xl lg:max-w-2xl xl:max-w-3xl 2xl:max-w-5xl w-full text-slate-900 p-2 md:p-4 lg:p-8 max-h-[50vh] mb-8 pb-32 overflow-y-auto md:pb-32 lg:pb-36 xl:pb-40 2xl:pb-44 !mb-[100px] translate-y-[-200px]">
+            <DialogContent className="bg-white border-black max-w-full md:max-w-xl lg:max-w-2xl xl:max-w-3xl 2xl:max-w-5xl w-full text-slate-900 p-2 md:p-4 lg:p-8 max-h-[50vh] mb-8 pb-32 overflow-y-auto md:pb-32 lg:pb-36 xl:pb-40 2xl:pb-44 !mb-[100px] translate-y-[-250px]">
               <DialogHeader>
                 <DialogTitle className="text-cyan-800 font-bold text-lg md:text-xl lg:text-2xl mb-4 md:mb-6">Добавить упражнение</DialogTitle>
               </DialogHeader>
@@ -194,7 +194,7 @@ export default function EditWorkoutPage() {
                 </div>
               )}
               <Dialog open={addNewExerciseOpen} onOpenChange={setAddNewExerciseOpen}>
-                <DialogContent className="bg-white border-black max-w-full md:max-w-xl lg:max-w-2xl 2xl:max-w-3xl w-full rounded-xl text-slate-900 p-2 md:p-4 lg:p-8 max-h-[50vh] mb-8 pb-32 overflow-y-auto translate-y-[-50px]">
+                <DialogContent className="bg-white border-black max-w-full md:max-w-xl lg:max-w-2xl 2xl:max-w-3xl w-full rounded-xl text-slate-900 p-2 md:p-4 lg:p-8 max-h-[50vh] mb-8 pb-32 overflow-y-auto translate-y-[-250px]">
                   <DialogHeader>
                     <DialogTitle className="text-cyan-800 text-base md:text-lg lg:text-xl mb-2 md:mb-4">Новое упражнение</DialogTitle>
                   </DialogHeader>

@@ -117,7 +117,7 @@ export default function NewWorkoutPage() {
             <DialogTrigger asChild>
               <Button type="button" variant="outline" className="flex-[2] font-bold text-cyan-800 border-black hover:bg-cyan-100 rounded-lg text-lg md:text-xl !h-8 md:!h-10 px-2 md:px-4 whitespace-nowrap flex items-center justify-center">добавить упражнение</Button>
             </DialogTrigger>
-            <DialogContent className="bg-white border-black max-w-md md:max-w-lg lg:max-w-xl w-full text-slate-900 p-2 md:p-4 max-h-[50vh] mb-8 pb-32 overflow-y-auto md:pb-32 lg:pb-36 xl:pb-40 2xl:pb-44 translate-y-[-200px]">
+            <DialogContent className="bg-white border-black max-w-md md:max-w-lg lg:max-w-xl w-full text-slate-900 p-2 md:p-4 max-h-[50vh] mb-8 pb-32 overflow-y-auto md:pb-32 lg:pb-36 xl:pb-40 2xl:pb-44 translate-y-[-250px]">
               <DialogHeader>
                 <DialogTitle className="text-cyan-800 font-bold text-base md:text-lg mb-2 md:mb-4">Добавить упражнение</DialogTitle>
               </DialogHeader>
@@ -166,7 +166,7 @@ export default function NewWorkoutPage() {
                 </div>
               )}
               <Dialog open={addNewExerciseOpen} onOpenChange={setAddNewExerciseOpen}>
-                <DialogContent className="bg-white border-black max-w-md md:max-w-lg lg:max-w-xl w-full rounded-xl text-slate-900 p-2 md:p-4 max-h-[50vh] mb-8 pb-32 overflow-y-auto translate-y-[-200px]">
+                <DialogContent className="bg-white border-black max-w-md md:max-w-lg lg:max-w-xl w-full rounded-xl text-slate-900 p-2 md:p-4 max-h-[50vh] mb-8 pb-32 overflow-y-auto translate-y-[-250px]">
                   <DialogHeader>
                     <DialogTitle className="text-cyan-800 text-sm md:text-base mb-2 md:mb-4">Новое упражнение</DialogTitle>
                   </DialogHeader>
